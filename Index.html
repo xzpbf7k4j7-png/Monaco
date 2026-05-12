@@ -1,0 +1,2102 @@
+```html
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lean Bulk Plan 78,7 → 82 kg</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            background: rgba(255,255,255,0.1);
+            padding: 10px 20px;
+            border-radius: 10px;
+        }
+
+        .stat strong {
+            display: block;
+            font-size: 1.3em;
+        }
+
+        nav {
+            background: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            border-bottom: 2px solid #dee2e6;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 15px 30px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            color: #495057;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab-btn:hover {
+            background: #e9ecef;
+        }
+
+        .tab-btn.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+            background: white;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            color: #2a5298;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        h3 {
+            color: #495057;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        /* Einkaufsliste */
+        .shopping-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .category {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .category h3 {
+            margin-top: 0;
+            color: #667eea;
+        }
+
+        .category-items {
+            list-style: none;
+        }
+
+        .category-items li {
+            padding: 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .category-items input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .category-items label {
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .category-items input[type="checkbox"]:checked + label {
+            text-decoration: line-through;
+            opacity: 0.5;
+        }
+
+        /* Wochenplan */
+        .day-card {
+            background: #f8f9fa;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+        }
+
+        .day-card.cheat-day {
+            border-left: 5px solid #ffc107;
+            background: linear-gradient(135deg, #fff9e6 0%, #fff3cd 100%);
+        }
+
+        .day-card.grill-day {
+            border-left: 5px solid #ff6b6b;
+            background: linear-gradient(135deg, #ffe8e8 0%, #ffd4d4 100%);
+        }
+
+        .day-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .day-title {
+            font-size: 1.5em;
+            color: #2a5298;
+        }
+
+        .training-badge {
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        .cheat-badge {
+            background: #ffc107;
+            color: #856404;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+
+        .grill-badge {
+            background: #ff6b6b;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+
+        .calories {
+            background: #28a745;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .meal {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .meal h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .ingredients {
+            list-style: none;
+            margin: 10px 0;
+        }
+
+        .ingredients li:before {
+            content: "✓ ";
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .macros {
+            background: #e7f3ff;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-size: 0.9em;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .macro {
+            font-weight: 600;
+        }
+
+        /* Tracking */
+        .tracking-form {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #dee2e6;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        .btn {
+            background: #667eea;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .progress-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-table th {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+
+        .progress-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .progress-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .chart-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            height: 300px;
+            display: flex;
+            align-items: flex-end;
+            gap: 10px;
+            border: 2px solid #dee2e6;
+        }
+
+        .bar {
+            flex: 1;
+            background: #667eea;
+            border-radius: 5px 5px 0 0;
+            position: relative;
+            transition: all 0.3s;
+            min-height: 20px;
+        }
+
+        .bar:hover {
+            background: #5568d3;
+        }
+
+        .bar-label {
+            position: absolute;
+            bottom: -25px;
+            width: 100%;
+            text-align: center;
+            font-size: 0.8em;
+        }
+
+        .bar-value {
+            position: absolute;
+            top: -25px;
+            width: 100%;
+            text-align: center;
+            font-weight: bold;
+            color: #495057;
+        }
+
+        .print-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #28a745;
+            color: white;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+        }
+
+        .print-btn:hover {
+            transform: scale(1.1);
+        }
+
+        @media print {
+            .print-btn, nav, .tracking-form, .btn, .calculator-section { display: none; }
+            .tab-content { display: block !important; }
+        }
+
+        @media (max-width: 768px) {
+            .stats { gap: 10px; }
+            .stat { font-size: 0.9em; }
+            .tab-btn { padding: 10px 15px; font-size: 0.9em; }
+            .content { padding: 15px; }
+        }
+
+        .tips {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .tips h4 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .tips ul {
+            margin-left: 20px;
+        }
+
+        .tips li {
+            margin: 5px 0;
+            color: #856404;
+        }
+
+        /* Calculator Section */
+        .calculator-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .calculator-section h3 {
+            color: white;
+            margin-top: 0;
+        }
+
+        .calc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .calc-result {
+            background: rgba(255,255,255,0.95);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .calc-result h4 {
+            color: #2a5298;
+            margin-bottom: 10px;
+        }
+
+        .calc-result .big-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .calc-result .small-text {
+            color: #6c757d;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            color: #856404;
+        }
+
+        .success-box {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            color: #155724;
+        }
+
+        .info-box {
+            background: #d1ecf1;
+            border: 2px solid #17a2b8;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            color: #0c5460;
+        }
+
+        .beer-emoji {
+            font-size: 1.5em;
+        }
+
+        .grill-emoji {
+            font-size: 1.5em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏋️ Lean Bulk Ernährungsplan</h1>
+            <div class="stats">
+                <div class="stat">
+                    <small>Start</small>
+                    <strong>78,7 kg</strong>
+                </div>
+                <div class="stat">
+                    <small>Ziel</small>
+                    <strong>82 kg</strong>
+                </div>
+                <div class="stat">
+                    <small>Größe</small>
+                    <strong>189 cm</strong>
+                </div>
+                <div class="stat">
+                    <small>Ø Kalorien</small>
+                    <strong id="avgCaloriesDisplay">3.400 kcal</strong>
+                </div>
+                <div class="stat">
+                    <small>Protein/Tag</small>
+                    <strong>160g</strong>
+                </div>
+                <div class="stat">
+                    <small>Dauer</small>
+                    <strong>~13 Wochen</strong>
+                </div>
+            </div>
+        </header>
+
+        <nav>
+            <button class="tab-btn active" onclick="showTab('kalkulator')">🧮 Kalkulator</button>
+            <button class="tab-btn" onclick="showTab('wochenplan')">📅 Wochenplan</button>
+            <button class="tab-btn" onclick="showTab('einkauf')">🛒 Einkaufsliste</button>
+            <button class="tab-btn" onclick="showTab('tracking')">📊 Fortschritt</button>
+            <button class="tab-btn" onclick="showTab('tipps')">💡 Tipps</button>
+        </nav>
+
+        <div class="content">
+            <!-- KALKULATOR -->
+            <div id="kalkulator" class="tab-content active">
+                <h2>Kalorienbedarf-Kalkulator</h2>
+                
+                <div class="calculator-section">
+                    <h3>📱 Daten von deiner Fitnessuhr</h3>
+                    <p style="opacity: 0.9; margin-bottom: 15px;">Trage die Werte von heute oder dem Durchschnitt der letzten 7 Tage ein</p>
+                    
+                    <div class="calc-grid">
+                        <div class="form-group">
+                            <label style="color: white;">Aktuelles Gewicht (kg)</label>
+                            <input type="number" step="0.1" id="calcWeight" value="78.7" oninput="calculateNeeds()">
+                        </div>
+                        <div class="form-group">
+                            <label style="color: white;">Alter (Jahre)</label>
+                            <input type="number" id="calcAge" value="43" oninput="calculateNeeds()">
+                        </div>
+                        <div class="form-group">
+                            <label style="color: white;">Täglicher Kalorienverbrauch (Fitnessuhr)</label>
+                            <input type="number" id="calcTDEE" placeholder="z.B. 2800" oninput="calculateNeeds()">
+                            <small style="color: rgba(255,255,255,0.8); display: block; margin-top: 5px;">Falls deine Uhr das anzeigt</small>
+                        </div>
+                        <div class="form-group">
+                            <label style="color: white;">Ø Schritte pro Tag</label>
+                            <input type="number" id="calcSteps" placeholder="z.B. 12000" oninput="calculateNeeds()">
+                        </div>
+                    </div>
+
+                    <h3 style="margin-top: 25px;">🏃 Wöchentliche Trainingsaktivität</h3>
+                    <div class="calc-grid">
+                        <div class="form-group">
+                            <label style="color: white;">Freeletics (3x/Woche)</label>
+                            <input type="number" id="calcFreeletics" value="450" oninput="calculateNeeds()">
+                            <small style="color: rgba(255,255,255,0.8);">Ø kcal pro Session (von Uhr)</small>
+                        </div>
+                        <div class="form-group">
+                            <label style="color: white;">Tennis 1h (Dienstag)</label>
+                            <input type="number" id="calcTennis1" value="350" oninput="calculateNeeds()">
+                            <small style="color: rgba(255,255,255,0.8);">kcal pro Session</small>
+                        </div>
+                        <div class="form-group">
+                            <label style="color: white;">Tennis 2h (Donnerstag)</label>
+                            <input type="number" id="calcTennis2" value="700" oninput="calculateNeeds()">
+                            <small style="color: rgba(255,255,255,0.8);">kcal pro Session</small>
+                        </div>
+                        <div class="form-group">
+                            <label style="color: white;">Tennis Mannschaftsspiel (Samstag)</label>
+                            <input type="number" id="calcTennisMatch" value="900" oninput="calculateNeeds()">
+                            <small style="color: rgba(255,255,255,0.8);">Einzel + Doppel (~3-4h)</small>
+                        </div>
+                        <div class="form-group">
+                            <label style="color: white;">6km Lauf (Sonntag)</label>
+                            <input type="number" id="calcRun" value="400" oninput="calculateNeeds()">
+                            <small style="color: rgba(255,255,255,0.8);">kcal pro Lauf</small>
+                        </div>
+                    </div>
+
+                    <button class="btn" onclick="calculateNeeds()" style="margin-top: 20px; background: white; color: #667eea;">
+                        🔄 Berechnen
+                    </button>
+                </div>
+
+                <div id="calculatorResults"></div>
+            </div>
+
+            <!-- WOCHENPLAN -->
+            <div id="wochenplan" class="tab-content">
+                <h2>Wochenplan mit Rezepten</h2>
+
+                <div class="info-box" style="margin-bottom: 20px;">
+                    <strong>🍎 Bananen-frei!</strong> Alle Rezepte ohne Bananen - ersetzt durch Äpfel, Beeren und Haferflocken.<br>
+                    <strong>🔥 Samstag = Grill-Tag!</strong> Nach dem Mannschaftsspiel gibt's BBQ!<br>
+                    <strong>🏃 Sonntag = 6km Lauf!</strong> Laufen jetzt am Sonntag statt Samstag.
+                </div>
+
+                <!-- MONTAG -->
+                <div class="day-card">
+                    <div class="day-header">
+                        <div class="day-title">Montag</div>
+                        <div class="training-badge">Freeletics</div>
+                        <div class="calories">3.400 kcal</div>
+                    </div>
+
+                    <div class="meal">
+                        <h4>🌅 Frühstück: Protein-Overnight-Oats</h4>
+                        <ul class="ingredients">
+                            <li>100g Haferflocken</li>
+                            <li>200ml Milch (3,5%)</li>
+                            <li>100g Magerquark</li>
+                            <li>1 Apfel (gerieben oder klein gewürfelt)</li>
+                            <li>20g Mandeln/Nüsse</li>
+                            <li>1 EL Honig</li>
+                            <li>Zimt nach Geschmack</li>
+                            <li>Handvoll Beeren</li>
+                        </ul>
+                        <div class="macros">
+                            <span class="macro">🔥 750 kcal</span>
+                            <span class="macro">💪 30g Protein</span>
+                            <span class="macro">🍞 90g KH</span>
+                            <span class="macro">🥑 25g Fett</span>
+                        </div>
+                        <p style="margin-top:10px; font-style:italic;">📝 Am Sonntagabend vorbereiten - 4 Portionen in Gläsern</p>
+                    </div>
+
+                    <div class="meal">
+                        <h4>🥤 Mittags-Snack: Whey-Shake</h4>
+                        <ul class="ingredients">
+                            <li>40g Whey Protein</li>
+                            <li>300ml Milch (3,5%)</li>
+                            <li>60g Haferflocken</li>
+                            <li>1 EL Erdnussbutter</li>
+                            <li>1 EL Honig</li>
+                            <li>Optional: 50g Beeren (TK) für Geschmack</li>
+                        </ul>
+                        <div class="macros">
+                            <span class="macro">🔥 550 kcal</span>
+                            <span class="macro">💪 45g Protein</span>
+                            <span class="macro">🍞 50g KH</span>
+                            <span class="macro">🥑 18g Fett</span>
+                        </div>
+                        <p style="margin-top:10px; font-style:italic;">⏰ Ideal 30-60 Min. nach Freeletics</p>
+                    </div>
+
+                    <div class="meal">
+                        <h4>🍽️ Abendessen: Hähnchen-Reis-Bowl</h4>
+                        <ul class="ingredients">
+                            <li>250g Hähnchenbrustfilet</li>
+                            <li>150g Reis (Trockengewicht)</li>
+                            <li>200g Brokkoli</li>
+                            <li>1 Paprika</li>
+                            <li>1 Zucchini</li>
+                            <li>1 EL Olivenöl</li>
+                            <li>Sojasauce, Knoblauch, Ingwer</li>
+                        </ul>
+                        <strong>Zubereitung:</strong>
+                        <ol style="margin-left: 20px; margin-top: 10px;">
+                            <li>Reis nach Packungsanweisung kochen</li>
+                            <li>Hähnchen in Würfel schneiden, mit Salz/Pfeffer würzen</li>
+                            <li>In heißer Pfanne mit Öl anbraten (6-8 Min.)</li>
+                            <li>Gemüse kleinschneiden, mit Hähnchen braten</li>
+                            <li>Knoblauch, Ingwer, Sojasauce hinzufügen</li>
+                            <li>Über Reis servieren</li>
+                        </ol>
+                        <div class="macros">
+                            <span class="macro">🔥 1.100 kcal</span>
+                            <span class="macro">💪 75g Protein</span>
+                            <span class="macro">🍞 130g KH</span>
+                            <span class="macro">🥑 22g Fett</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DIENSTAG -->
+                <div class="day-card">
+                    <div class="day-header">
+                        <div class="day-title">Dienstag</div>
+                        <div class="training-badge">Tennis 1h</div>
+                        <div class="calories">3.300 kcal</div>
+                    </div>
+
+                    <div class="meal">
+                        <h4>🌅 Frühstück: Protein-Overnight-Oats</h4>
+                        <ul class="ingredients">
+                            <li>Gleiche Zubereitung wie Montag (vorbereitet)</li>
+                        </ul>
+                        <div class="macros">
+                            <span class="macro">🔥 750 kcal</span>
+                            <span class="macro">💪 30g Protein</span>
+                        </div>
+                    </div>
+
+                    <div class="meal">
+                        <h4>🥤 Mittags-Snack: Quark-Protein-Bowl</h4>
+                        <ul class="ingredients">
+                            <li>250g Magerquark</li>
+                            <li>20g Whey Protein</li>
+                            <li>1 Apfel (gewürfelt)</li>
+                            <li>30g Nüsse</li>
+                            <li>1 EL Honig</li>
+                            <li>50g Beeren</li>
+                        </ul>
+                        <div class="macros">
+                            <span class="macro">🔥 450 kcal</span>
+                            <span class="macro">💪 45g Protein</span>
+                        </div>
+                    </div>
+
+                    <div class="meal">
+                        <h4>🍽️ Abendessen: Lachs mit Süßkartoffeln</h4>
+                        <ul class="ingredients">
+                            <li>200g Lachsfilet</li>
+                            <li>400g Süßkartoffeln</li>
+                            <li>200g Spinat (frisch)</li>
+                            <li>200g griechischer Joghurt</li>
+                            <li>1/2 Gurke</li>
+                            <li>2 Knoblauchzehen</li>
+                            <li>Zitrone, Rosmarin, Olivenöl</li>
+                        </ul>
+                        <strong>Zubereitung:</strong>
+                        <ol style="margin-left: 20px; margin-top: 10px;">
+                            <li>Ofen auf 200°C vorheizen</li>
+                            <li>Süßkartoffeln in Spalten schneiden, mit Rosmarin & Öl marinieren</li>
+                            <li>25-30 Min. im Ofen backen</li>
+                            <li>Lachs mit Zitrone, Salz, Pfeffer würzen, in Pfanne braten (4 Min./Seite)</li>
+                            <li>Spinat mit Knoblauch in Pfanne dünsten</li>
+                            <li>Tzatziki: Joghurt + geriebene Gurke + gepressten Knoblauch mischen</li>
+                        </ol>
+                        <div class="macros">
+                            <span class="macro">🔥 1.100 kcal</span>
+                            <span class="macro">💪 60g Protein</span>
+                            <span class="macro">🍞 115g KH</span>
+                            <span class="macro">🥑 38g Fett</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MITTWOCH -->
+                <div class="day-card">
+                    <div class="day-header">
+                        <div class="day-title">Mittwoch</div>
+                        <div class="training-badge">Freeletics</div>
+                        <div class="calories">3.400 kcal</div>
+                    </div>
+
+                    <div class="meal">
+                        <h4>🌅 Frühstück: Protein-Overnight-Oats</h4>
+                        <div class="macros">
+                            <span class="macro">🔥 750 kcal</span>
+                            <span class="macro">💪 30g Protein</span>
+                        </div>
+                    </div>
+
+                    <div class="meal">
+                        <h4>🥤 Mittags-Snack: Whey-Shake</h4>
+                        <ul class="ingredients">
+                            <li>40g Whey + 300ml Milch + 60g Hafer + 1 EL Erdnussbutter + 1 EL Honig</li>
+                        </ul>
+                        <div class="macros">
+                            <span class="macro">🔥 550 kcal</span>
+                            <span class="macro">💪 45g Protein</span>
+                        </div>
+                    </div>
+
+                    <div class="meal">
+                        <h4>🍽️ Abendessen: Rindergeschnetzeltes</h4>
+                        <ul class="ingredients">
+                            <li>250g Rindfleisch (Geschnetzeltes)</li>
+                            <li>120g Vollkornnudeln (Trockengewicht)</li>
+                            <li>250g Champignons</li>
+                            <li>150ml Sahne (15%)</li>
+                            <li>1 Zwiebel</li>
+                            <li>Gemischter Salat</li>
+                            <li>2 EL Olivenöl für Dressing</li>
+                        </ul>
+                        <strong>Zubereitung:</strong>
+                        <ol style="margin-left: 20px; margin-top: 10px;">
+                            <li>Nudeln nach Packungsanweisung kochen</li>
+                            <li>Rindfleisch scharf anbraten, aus Pfanne nehmen</li>
+                            <li>Zwiebel & Champignons andünsten</li>
+                            <li>Fleisch zurück, mit Sahne ablöschen</li>
+                            <li>Mit Salz, Pfeffer, Paprika würzen, köcheln lassen</li>
+                            <li>Mit Nudeln und Salat servieren</li>
+                        </ol>
+                        <div class="macros">
+                            <span class="macro">🔥 1.100 kcal</span>
+                            <span class="macro">💪 70g Protein</span>
+                            <span class="macro">🍞 100g KH</span>
+                            <span class="macro">🥑 42g Fett</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DONNERSTAG - CHEAT DAY -->
+                <div class="day-card cheat-day">
+                    <div class="day-header">
+                        <div class="day-title">Donnerstag <span class="beer-emoji">🍺🥙</span></div>
+                        <div class="training-badge">Tennis 2h</div>
+                        <div class="cheat-badge">Döner & Bier Tag!</div>
+                        <div class="calories">3.400 kcal</div>
+                    </div>
+
+                    <div class="meal">
+                        <h4>🌅 Frühstück: Protein-Overnight-Oats</h4>
+                        <div class="macros">
+                            <span class="macro">🔥 750 kcal</span>
+                            <span class="macro">💪 30g Protein</span>
+                        </div>
+                    </div>
+
+                    <div class="meal">
+                        <h4>🥤 Mittags-Snack: Quark-Protein-Bowl</h4>
+                        <ul class="ingredients">
+                            <li>250g Magerquark + 20g Whey + 1 Apfel + 30g Nüsse + Honig + Beeren</li>
+                        </ul>
+                        <div class="macros">
+                            <span class="macro">🔥 450 kcal</span>
+                            <span class="macro">💪 45g Protein</span>
+                        </div>
+                    </div>
+
+                    <div class="meal" style="border: 3px solid #ffc107;">
+                        <h4>🍽️🍺 Abendessen: Dönerteller + 2 Weizenbier (nach Tennis!)</h4>
+                        <div class="info-box">
+                            <strong>🎯 Perfektes Post-Tennis Meal!</strong>
+                            <p>Nach 2h Tennis hast du dir das verdient - und es passt perfekt ins Kalorienbudget!</p>
+                        </div>
+                        <ul class="ingredients">
+                            <li><strong>Dönerteller (große Portion):</strong></li>
+                            <li>300g Hähnchen/Kalb (vom Drehspieß)</li>
+                            <li>200g Reis oder Pommes</li>
+                            <li>Großer gemischter Salat (Eisberg, Tomate, Gurke, Rotkohl)</li>
+                            <li>Sauce (Knoblauch, Kräuter, scharf)</li>
+                            <li>Optional: Fladenbrot</li>
+                        </ul>
+                        <ul class="ingredients" style="margin-top: 15px;">
+                            <li><strong>2x Weizenbier (je 0,5l):</strong></li>
+                            <li>Perfekt zur Regeneration & Elektrolyte</li>
+                            <li>Genieß es! 🍺</li>
+                        </ul>
+                        <div class="macros">
+                            <span class="macro">🔥 1.200 kcal</span>
+                            <span class="macro">💪 65g Protein</span>
+                            <span class="macro">🍞 110g KH</span>
+                            <span class="macro">🥑 35g Fett</span>
+                            <span class="macro">🍺 500 kcal (Bier)</span>
+                        </div>
+                        <div class="success-box" style="margin-top: 15px;">
+                            <strong>💡 Tipp:</strong> Bestelle den Dönerteller mit extra Salat und Fleisch. Die meisten Dönerläden machen das gerne. Verzichte auf übermäßig viel Sauce, um Kalorien zu sparen. Die 2 Weizenbier haben ca. 250 kcal/Stück und liefern nach dem Sport sogar schnelle Kohlenhydrate!
+                        </div>
+                        <p style="margin-top:10px; font-style:italic; color: #856404;"><strong>🎉 Gesamtkalorien Abend: ~1.700 kcal (inkl. Bier) - Passt perfekt!</strong></p>
+                    </div>
+                </div>
+
+                <!-- FREITAG -->
+                <div class="day-card">
+                    <div class="day-header">
+                        <div class="day-title">Freitag</div>
+                        <div class="training-badge">Freeletics</div>
+                        <div class="calories">3.450 kcal</div>
+                    </div>
+
+                    <div class="meal">
+                        <h4>🌅 Frühstück: Ei-Gemüse-Muffins</h4>
+                        <ul class="ingredients">
+                            <li>3 Ei-Muffins (am Sonntag vorbereitet)</li>
+                            <li>3 Scheiben Buchweizenbrot</li>
+                            <li>1 Avocado</li>
+                        </ul>
+                        <strong>Muffin-Rezept (6 Stück Meal Prep):</strong>
+                        <ol style="margin-left: 20px; margin-top: 10px;">
+                            <li>12 Eier verquirlen</li>
+                            <li>Gemüse (Paprika, Spinat, Tomaten) kleinschneiden</li>
+                            <li>150g Feta/Gouda würfeln</li>
+                            <li>Alles mischen, würzen (Salz, Pfeffer, Kräuter)</li>
+                            <li>In Muffinform füllen</li>
+                            <li>Bei 180°C 20-25 Min. backen</li>
+                            <li>Im Kühlschrank 4-5 Tage haltbar</li>
+                        </ol>
+                        <div class="macros">
+                            <span class="macro">🔥 700 kcal</span>
+                            <span class="macro">💪 35g Protein</span>
+                        </div>
+                    </div>
+
+                    <div class="meal">
+                        <h4>🥤 Mittags-Snack: Whey-Shake</h4>
+                        <div class="macros">
+                            <span class="macro">🔥 550 kcal</span>
+                            <span class="macro">💪 45g Protein</span>
+                        </div>
+                    </div>
+
+                    <div class="meal">
+                        <h4>🍽️ Abendessen: Puten-Gemüse-Pfanne Asiatisch</h4>
+                        <ul class="ingredients">
+                            <li>250g Putenbrust</li>
+                            <li>150g Jasminreis (Trockengewicht)</li>
+                            <li>Wok-Gemüse: Brokkoli, Karotten, Paprika, Zuckerschoten</li>
+                            <li>30g Cashewkerne</li>
+                            <li>Sojasauce, Ingwer, Knoblauch, Sesamöl</li>
+                        </ul>
+                        <strong>Zubereitung:</strong>
+                        <ol style="margin-left: 20px; margin-top: 10px;">
+                            <li>Reis kochen</li>
+                            <li>Putenbrust in Streifen schneiden</li>
+                            <li>Gemüse klein schneiden</li>
+                            <li>Wok/Pfanne sehr heiß werden lassen</li>
+                            <li>Pute scharf anbraten, herausnehmen</li>
+                            <li>Gemüse nacheinander anbraten (härtestes zuerst)</li>
+                            <li>Pute zurück, mit Sojasauce, Ingwer, Knoblauch würzen</li>
+                            <li>Cashews drüber, mit Reis servieren</li>
+                        </ol>
+                        <div class="macros">
+                            <span class="macro">🔥 1.150 kcal</span>
+                            <span class="macro">💪 72g Protein</span>
+                            <span class="macro">🍞 125g KH</span>
+                            <span class="macro">🥑 28g Fett</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SAMSTAG - GRILL TAG -->
+                <div class="day-card grill-day">
+                    <div class="day-header">
+                        <div class="day-title">Samstag <span class="grill-emoji">🎾🔥</span></div>
+                        <div class="training-badge">Tennis Mannschaftsspiel</div>
+                        <div class="grill-badge">BBQ-Abend!</div>
+                        <div class="calories">3.600 kcal</div>
+                    </div>
+
+                    <div class="meal">
+                        <h4>🌅 Frühstück: Klassisch Frisch (Power für Tennis!)</h4>
+                        <ul class="ingredients">
+                            <li>4 Eier (Rührei/Spiegelei)</li>
+                            <li>150g Champignons</li>
+                            <li>3 Scheiben Buchweizenbrot</li>
+                            <li>1 Avocado</li>
+                            <li>1 Tomate</li>
+                        </ul>
+                        <div class="macros">
+                            <span class="macro">🔥 800 kcal</span>
+                            <span class="macro">💪 38g Protein</span>
+                        </div>
+                    </div>
+
+                    <div class="meal">
+                        <h4>🥤 Vormittags-Snack (vor Tennis): Energy-Bowl</h4>
+                        <ul class="ingredients">
+                            <li>200g Magerquark</li>
+                            <li>20g Whey Protein</li>
+                            <li>1 Apfel</li>
+                            <li>40g Haferflocken</li>
+                            <li>1 EL Honig</li>
+                        </ul>
+                        <div class="macros">
+                            <span class="macro">🔥 450 kcal</span>
+                            <span class="macro">💪 40g Protein</span>
+                        </div>
+                        <p style="margin-top:10px; font-style:italic;">⏰ 1-2h vor dem Mannschaftsspiel</p>
+                    </div>
+
+                    <div class="meal" style="border: 3px solid #ff6b6b;">
+                        <h4>🔥 Abendessen: GRILL-FEST nach dem Sieg! 🎾</h4>
+                        <div class="success-box">
+                            <strong>🏆 Perfekt nach 3-4h Tennis (Einzel + Doppel)!</strong>
+                            <p>Du hast ~900 kcal verbrannt - jetzt wird gefeiert mit den Jungs/Mädels!</p>
+                        </div>
+                        
+                        <strong style="display: block; margin-top: 15px; color: #ff6b6b;">🥩 Vom Grill:</strong>
+                        <ul class="ingredients">
+                            <li>250g Rindersteak (oder 2x 125g)</li>
+                            <li>200g Hähnchenbrust/Putenspieße</li>
+                            <li>2 Bratwürste (je ~100g)</li>
+                            <li>Gegrilltes Gemüse (Zucchini, Paprika, Aubergine)</li>
+                            <li>Maiskolben gegrillt</li>
+                        </ul>
+
+                        <strong style="display: block; margin-top: 15px; color: #ff6b6b;">🥗 Beilagen:</strong>
+                        <ul class="ingredients">
+                            <li>200g Folienkartoffeln mit Kräuterquark</li>
+                            <li>Großer gemischter Salat</li>
+                            <li>Kräuterbutter</li>
+                            <li>Baguette/Ciabatta</li>
+                        </ul>
+
+                        <strong style="display: block; margin-top: 15px; color: #ff6b6b;">🍺 Getränke:</strong>
+                        <ul class="ingredients">
+                            <li>2-3 Bier/Radler (je nach Lust) = ~500-750 kcal</li>
+                            <li>Viel Wasser zwischendurch!</li>
+                        </ul>
+
+                        <div class="macros">
+                            <span class="macro">🔥 ~2.350 kcal</span>
+                            <span class="macro">💪 95g Protein</span>
+                            <span class="macro">🍞 140g KH</span>
+                            <span class="macro">🥑 110g Fett</span>
+                            <span class="macro">🍺 ~600 kcal (Bier)</span>
+                        </div>
+
+                        <div class="warning-box" style="margin-top: 15px;">
+                            <strong>🔥 Grill-Tipps:</strong>
+                            <ul style="margin-left: 20px; margin-top: 10px;">
+                                <li><strong>Fleisch marinieren:</strong> Abends vorher mit Gewürzen/Öl einlegen</li>
+                                <li><strong>Proteinreich:</strong> Fokus auf mageres Fleisch (Hähnchen, Pute, Rind)</li>
+                                <li><strong>Gemüse nicht vergessen:</strong> Mindestens 300g vom Grill</li>
+                                <li><strong>Würste:</strong> Maximal 2 Stück - sind fett- und kalorienreich</li>
+                                <li><strong>Saucen sparsam:</strong> BBQ-Sauce hat viel Zucker</li>
+                                <li><strong>Timing:</strong> Nach ~900 kcal Tennisverbrauch hast du Platz für die Kalorien!</li>
+                            </ul>
+                        </div>
+
+                        <div class="info-box" style="margin-top: 15px;">
+                            <strong>💪 Warum das passt:</strong>
+                            <ul style="margin-left: 20px; margin-top: 10px;">
+                                <li>Tennis-Mannschaftsspiel: ~900 kcal Verbrauch</li>
+                                <li>Hoher Proteinbedarf nach 3-4h intensivem Sport</li>
+                                <li>Soziales Beisammensein = psychologisch wichtig</li>
+                                <li>Samstag = höchster Kalorienbedarf der Woche</li>
+                                <li>Perfekte Regeneration für Sonntag-Lauf</li>
+                            </ul>
+                        </div>
+
+                        <p style="margin-top:15px; font-style:italic; color: #721c24; font-weight: bold;">
+                            🎉 Genieß den Abend! Das ist kein Cheat - das ist Teil des Plans! 🔥
+                        </p>
+                    </div>
+                </div>
+
+                <!-- SONNTAG - LAUFTAG -->
+                <div class="day-card">
+                    <div class="day-header">
+                        <div class="day-title">Sonntag</div>
+                        <div class="training-badge">6km Lauf + Meal Prep</div>
+                        <div class="calories">3.350 kcal</div>
+                    </div>
+
+                    <div class="meal">
+                        <h4>🌅 Frühstück: Klassisch Frisch</h4>
+                        <ul class="ingredients">
+                            <li>4 Eier + Champignons + 3 Scheiben Buchweizenbrot + Avocado + Tomate</li>
+                        </ul>
+                        <div class="macros">
+                            <span class="macro">🔥 800 kcal</span>
+                            <span class="macro">💪 38g Protein</span>
+                        </div>
+                    </div>
+
+                    <div class="meal">
+                        <h4>🥤 Post-Run Shake (nach 6km)</h4>
+                        <ul class="ingredients">
+                            <li>40g Whey Protein</li>
+                            <li>400ml Milch</li>
+                            <li>2 EL Honig</li>
+                            <li>100g Beeren (TK)</li>
+                            <li>30g Haferflocken</li>
+                        </ul>
+                        <div class="macros">
+                            <span class="macro">🔥 500 kcal</span>
+                            <span class="macro">💪 40g Protein</span>
+                        </div>
+                        <p style="margin-top:10px; font-style:italic;">⏰ Direkt nach dem 6km Lauf am Vormittag</p>
+                    </div>
+
+                    <div class="meal">
+                        <h4>🍽️ Abendessen: Veggie-Power-Bowl</h4>
+                        <ul class="ingredients">
+                            <li>250g Kichererbsen (gekocht/Dose)</li>
+                            <li>100g Quinoa (Trockengewicht)</li>
+                            <li>Ofengemüse: Süßkartoffel, Kürbis, Rote Bete</li>
+                            <li>100g Feta</li>
+                            <li>2 EL Tahini</li>
+                            <li>Zitrone, Knoblauch</li>
+                        </ul>
+                        <strong>Zubereitung:</strong>
+                        <ol style="margin-left: 20px; margin-top: 10px;">
+                            <li>Quinoa nach Packungsanweisung kochen</li>
+                            <li>Gemüse in Würfel schneiden, mit Olivenöl marinieren</li>
+                            <li>Bei 200°C 30-35 Min. rösten</li>
+                            <li>Kichererbsen ggf. in Pfanne anbraten (würzen mit Kreuzkümmel, Paprika)</li>
+                            <li>Tahini-Dressing: Tahini + Zitrone + Wasser + Knoblauch</li>
+                            <li>Bowl zusammenstellen, Feta drüber bröseln</li>
+                        </ol>
+                        <div class="macros">
+                            <span class="macro">🔥 1.050 kcal</span>
+                            <span class="macro">💪 45g Protein</span>
+                            <span class="macro">🍞 130g KH</span>
+                            <span class="macro">🥑 35g Fett</span>
+                        </div>
+                    </div>
+
+                    <div class="tips">
+                        <h4>📋 Sonntag Meal Prep Checklist (Nachmittag/Abend):</h4>
+                        <ul>
+                            <li>✅ 4x Overnight Oats in Gläsern (Mo-Do) - mit geriebenem Apfel</li>
+                            <li>✅ 6x Ei-Gemüse-Muffins backen (Fr-Sa Frühstück)</li>
+                            <li>✅ 500g Reis vorkochen (für Mo/Mi/Fr)</li>
+                            <li>✅ Gemüse waschen und schneiden</li>
+                            <li>✅ Buchweizenbrot backen</li>
+                            <li>✅ Äpfel raspeln/würfeln für Overnight Oats</li>
+                            <li>✅ Grillgut für nächsten Samstag ggf. einfrieren</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-box" style="margin-top: 20px;">
+                        <strong>🏃 Sonntag-Lauf-Tipp:</strong>
+                        <p>Laufe am Vormittag nach dem Frühstück (1-2h Pause). So hast du nach dem Grill-Abend einen aktiven Regenerations-Tag und der Nachmittag ist frei für Meal Prep!</p>
+                    </div>
+                </div>
+
+                <div class="info-box" style="margin-top: 30px;">
+                    <h4>🍺🔥 Deine Wochenend-Highlights:</h4>
+                    <p><strong>Donnerstag:</strong> Döner & 2 Bier nach Tennis (1.700 kcal)</p>
+                    <p><strong>Samstag:</strong> BBQ nach Mannschaftsspiel (2.350 kcal)</p>
+                    <p style="margin-top: 10px;"><strong>Warum das funktioniert:</strong></p>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li>Beide Tage: Intensive Trainingsbelastung (Tennis 2h bzw. 3-4h)</li>
+                        <li>Hoher Kalorienverbrauch rechtfertigt große Mahlzeiten</li>
+                        <li>Soziale Komponente = psychologisch essentiell für Durchhalten</li>
+                        <li>Protein-Fokus beim Grillen = optimal für Muskelaufbau</li>
+                        <li>Wochenschnitt bleibt im Ziel-Bereich: ~3.400 kcal/Tag</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- EINKAUFSLISTE -->
+            <div id="einkauf" class="tab-content">
+                <h2>Wocheneinkauf (~60-70€)</h2>
+                
+                <div class="warning-box" style="margin-bottom: 20px;">
+                    <strong>⚡ Besondere Tage:</strong><br>
+                    <strong>Donnerstag:</strong> Dönerteller + 2 Weizenbier beim Dönerladen (ca. 12-15€)<br>
+                    <strong>Samstag:</strong> Grillgut frisch kaufen oder gemeinsam organisieren (ca. 20-25€)
+                </div>
+
+                <div class="shopping-list">
+                    <div class="category">
+                        <h3>🥛 Basis-Produkte</h3>
+                        <ul class="category-items">
+                            <li><input type="checkbox" id="hafer"><label for="hafer">600g Haferflocken (mehr für Shakes)</label></li>
+                            <li><input type="checkbox" id="reis"><label for="reis">500g Reis (Basmati/Jasmin)</label></li>
+                            <li><input type="checkbox" id="nudeln"><label for="nudeln">250g Vollkornnudeln</label></li>
+                            <li><input type="checkbox" id="quinoa"><label for="quinoa">100g Quinoa</label></li>
+                            <li><input type="checkbox" id="milch"><label for="milch">4 Liter Milch (3,5%) - mehr für Shakes</label></li>
+                            <li><input type="checkbox" id="quark"><label for="quark">1,5kg Magerquark</label></li>
+                            <li><input type="checkbox" id="joghurt"><label for="joghurt">400g Griechischer Joghurt</label></li>
+                            <li><input type="checkbox" id="whey"><label for="whey">Whey Protein (220g/Woche)</label></li>
+                        </ul>
+                    </div>
+
+                    <div class="category">
+                        <h3>🍗 Proteinquellen (ohne Grillgut)</h3>
+                        <ul class="category-items">
+                            <li><input type="checkbox" id="haehnchen"><label for="haehnchen">250g Hähnchenbrustfilet</label></li>
+                            <li><input type="checkbox" id="pute"><label for="pute">250g Putenbrust</label></li>
+                            <li><input type="checkbox" id="rind"><label for="rind">250g Rindergeschnetzeltes</label></li>
+                            <li><input type="checkbox" id="lachs"><label for="lachs">200g Lachsfilet</label></li>
+                            <li><input type="checkbox" id="eier"><label for="eier">30 Eier</label></li>
+                            <li><input type="checkbox" id="kichererbsen"><label for="kichererbsen">1 Dose Kichererbsen (250g)</label></li>
+                            <li><input type="checkbox" id="feta"><label for="feta">200g Feta</label></li>
+                        </ul>
+                    </div>
+
+                    <div class="category" style="border-left-color: #ffc107;">
+                        <h3 style="color: #ffc107;">🍺 Donnerstag-Special</h3>
+                        <ul class="category-items">
+                            <li><input type="checkbox" id="weizen"><label for="weizen">2x Weizenbier (0,5l) 🍺</label></li>
+                            <li><input type="checkbox" id="doener"><label for="doener">Dönerteller (beim Dönerladen) 🥙</label></li>
+                        </ul>
+                    </div>
+
+                    <div class="category" style="border-left-color: #ff6b6b;">
+                        <h3 style="color: #ff6b6b;">🔥 Samstag Grillgut</h3>
+                        <ul class="category-items">
+                            <li><input type="checkbox" id="rindersteak"><label for="rindersteak">250g Rindersteak (gute Qualität!)</label></li>
+                            <li><input type="checkbox" id="grillhaehnchen"><label for="grillhaehnchen">200g Hähnchenbrust/Putenspieße</label></li>
+                            <li><input type="checkbox" id="bratwurst"><label for="bratwurst">2 Bratwürste (~200g)</label></li>
+                            <li><input type="checkbox" id="grillgemuese"><label for="grillgemuese">Grillgemüse (Zucchini, Paprika, Aubergine)</label></li>
+                            <li><input type="checkbox" id="mais"><label for="mais">2 Maiskolben</label></li>
+                            <li><input type="checkbox" id="folienkartoffeln"><label for="folienkartoffeln">200g Kartoffeln für Folie</label></li>
+                            <li><input type="checkbox" id="kraeuterquark"><label for="kraeuterquark">200g Kräuterquark</label></li>
+                            <li><input type="checkbox" id="kraeuterbutter"><label for="kraeuterbutter">Kräuterbutter</label></li>
+                            <li><input type="checkbox" id="baguette"><label for="baguette">Baguette/Ciabatta</label></li>
+                            <li><input type="checkbox" id="grillbier"><label for="grillbier">6er Bier/Radler 🍺</label></li>
+                            <li><input type="checkbox" id="grillkohle"><label for="grillkohle">Grillkohle/Gas (falls nötig)</label></li>
+                        </ul>
+                        <p style="margin-top: 10px; font-size: 0.9em; color: #721c24;">
+                            <strong>Tipp:</strong> Fleisch Freitag kaufen & marinieren! Oder Kosten mit Team teilen.
+                        </p>
+                    </div>
+
+                    <div class="category">
+                        <h3>🥦 Gemüse</h3>
+                        <ul class="category-items">
+                            <li><input type="checkbox" id="brokkoli"><label for="brokkoli">500g Brokkoli</label></li>
+                            <li><input type="checkbox" id="paprika"><label for="paprika">4 Paprika (verschiedene Farben)</label></li>
+                            <li><input type="checkbox" id="zucchini"><label for="zucchini">2 Zucchini</label></li>
+                            <li><input type="checkbox" id="spinat"><label for="spinat">400g Spinat (frisch)</label></li>
+                            <li><input type="checkbox" id="champignons"><label for="champignons">500g Champignons</label></li>
+                            <li><input type="checkbox" id="tomaten"><label for="tomaten">500g Tomaten/Kirschtomaten</label></li>
+                            <li><input type="checkbox" id="gurke"><label for="gurke">3 Gurken</label></li>
+                            <li><input type="checkbox" id="salat"><label for="salat">3 Köpfe Salat (Eisberg/Römersalat)</label></li>
+                            <li><input type="checkbox" id="karotten"><label for="karotten">500g Karotten</label></li>
+                            <li><input type="checkbox" id="zwiebeln"><label for="zwiebeln">3 Zwiebeln</label></li>
+                            <li><input type="checkbox" id="knoblauch"><label for="knoblauch">1 Knolle Knoblauch</label></li>
+                        </ul>
+                    </div>
+
+                    <div class="category">
+                        <h3>🥔 Kartoffeln & Co</h3>
+                        <ul class="category-items">
+                            <li><input type="checkbox" id="kartoffeln"><label for="kartoffeln">1,5kg Kartoffeln (+ Folienkartoffeln)</label></li>
+                            <li><input type="checkbox" id="suesskartoffel"><label for="suesskartoffel">800g Süßkartoffeln</label></li>
+                            <li><input type="checkbox" id="kuerbis"><label for="kuerbis">400g Kürbis (z.B. Hokkaido)</label></li>
+                            <li><input type="checkbox" id="rotebete"><label for="rotebete">2 Rote Bete</label></li>
+                        </ul>
+                    </div>
+
+                    <div class="category" style="border-left-color: #28a745;">
+                        <h3 style="color: #28a745;">🍎 Obst (Bananen-frei!)</h3>
+                        <ul class="category-items">
+                            <li><input type="checkbox" id="aepfel"><label for="aepfel">8 Äpfel (für Overnight Oats & Snacks)</label></li>
+                            <li><input type="checkbox" id="beeren"><label for="beeren">1kg Beeren (frisch/TK - Mix)</label></li>
+                            <li><input type="checkbox" id="zitronen"><label for="zitronen">3 Zitronen</label></li>
+                        </ul>
+                    </div>
+
+                    <div class="category">
+                        <h3>🥑 Fette & Nüsse</h3>
+                        <ul class="category-items">
+                            <li><input type="checkbox" id="olivenoel"><label for="olivenoel">Olivenöl (200ml)</label></li>
+                            <li><input type="checkbox" id="avocado"><label for="avocado">4 Avocados</label></li>
+                            <li><input type="checkbox" id="mandeln"><label for="mandeln">100g Mandeln</label></li>
+                            <li><input type="checkbox" id="nuesse"><label for="nuesse">100g Nüsse-Mix</label></li>
+                            <li><input type="checkbox" id="cashews"><label for="cashews">50g Cashewkerne</label></li>
+                            <li><input type="checkbox" id="erdnussbutter"><label for="erdnussbutter">Erdnussbutter (250g)</label></li>
+                            <li><input type="checkbox" id="tahini"><label for="tahini">Tahini (100g)</label></li>
+                            <li><input type="checkbox" id="sahne"><label for="sahne">200ml Sahne 15%</label></li>
+                        </ul>
+                    </div>
+
+                    <div class="category">
+                        <h3>🧂 Gewürze & Sonstiges</h3>
+                        <ul class="category-items">
+                            <li><input type="checkbox" id="honig"><label for="honig">Honig (500g)</label></li>
+                            <li><input type="checkbox" id="sojasauce"><label for="sojasauce">Sojasauce</label></li>
+                            <li><input type="checkbox" id="ingwer"><label for="ingwer">Frischer Ingwer</label></li>
+                            <li><input type="checkbox" id="rosmarin"><label for="rosmarin">Rosmarin</label></li>
+                            <li><input type="checkbox" id="zimt"><label for="zimt">Zimt</label></li>
+                            <li><input type="checkbox" id="salz"><label for="salz">Salz, Pfeffer</label></li>
+                            <li><input type="checkbox" id="paprikapulver"><label for="paprikapulver">Paprikapulver</label></li>
+                            <li><input type="checkbox" id="grillgewuerz"><label for="grillgewuerz">Grillgewürz/Marinade</label></li>
+                            <li><input type="checkbox" id="bbqsauce"><label for="bbqsauce">BBQ-Sauce (sparsam!)</label></li>
+                        </ul>
+                    </div>
+
+                    <div class="category">
+                        <h3>🍞 Buchweizenbrot-Zutaten</h3>
+                        <ul class="category-items">
+                            <li><input type="checkbox" id="buchweizen"><label for="buchweizen">500g Buchweizenmehl</label></li>
+                            <li><input type="checkbox" id="hefe"><label for="hefe">1 Würfel Hefe</label></li>
+                            <li><input type="checkbox" id="samen"><label for="samen">Samen-Mix (Sonnenblumen, Kürbiskerne)</label></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div style="margin-top: 30px;">
+                    <button class="btn" onclick="clearChecklist()">✓ Alle abwählen</button>
+                    <button class="btn btn-secondary" onclick="window.print()" style="margin-left: 10px;">🖨️ Liste drucken</button>
+                </div>
+
+                <div class="info-box" style="margin-top: 20px;">
+                    <h4>💰 Budget-Planung:</h4>
+                    <ul style="margin-left: 20px;">
+                        <li><strong>Basis-Einkauf:</strong> ~40-45€</li>
+                        <li><strong>Donnerstag Döner:</strong> ~12-15€</li>
+                        <li><strong>Samstag Grillgut:</strong> ~20-25€ (oder mit Team teilen!)</li>
+                        <li><strong>Gesamt:</strong> ~70-85€/Woche</li>
+                    </ul>
+                    <p style="margin-top: 10px;"><strong>Tipp:</strong> Grillkosten mit Mannschaft teilen - jeder bringt was mit!</p>
+                </div>
+            </div>
+
+            <!-- TRACKING -->
+            <div id="tracking" class="tab-content">
+                <h2>Fortschrittskontrolle</h2>
+
+                <div class="tracking-form">
+                    <h3>Neuen Eintrag hinzufügen</h3>
+                    <div class="form-group">
+                        <label>Datum:</label>
+                        <input type="date" id="trackDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Gewicht (kg):</label>
+                        <input type="number" step="0.1" id="trackWeight" placeholder="78.7" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Notizen (optional):</label>
+                        <input type="text" id="trackNotes" placeholder="z.B. Energielevel, Trainingsleistung, Grill war episch...">
+                    </div>
+                    <button class="btn" onclick="addTracking()">➕ Eintrag speichern</button>
+                </div>
+
+                <h3>Gewichtsverlauf</h3>
+                <div class="chart-container" id="chartContainer">
+                    <div style="text-align: center; width: 100%; color: #999;">
+                        Noch keine Einträge. Füge deine erste Messung hinzu!
+                    </div>
+                </div>
+
+                <h3>Alle Messungen</h3>
+                <table class="progress-table">
+                    <thead>
+                        <tr>
+                            <th>Datum</th>
+                            <th>Gewicht</th>
+                            <th>Veränderung</th>
+                            <th>Bis Ziel</th>
+                            <th>Notizen</th>
+                            <th>Aktion</th>
+                        </tr>
+                    </thead>
+                    <tbody id="trackingTableBody">
+                        <tr>
+                            <td colspan="6" style="text-align: center; color: #999;">Keine Einträge vorhanden</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="tips" style="margin-top: 30px;">
+                    <h4>📊 Tracking-Tipps:</h4>
+                    <ul>
+                        <li><strong>Immer zur gleichen Zeit wiegen:</strong> Montagmorgen nach Toilettengang, vor Frühstück</li>
+                        <li><strong>Ziel:</strong> +0,25 kg pro Woche (langsamer, sauberer Aufbau)</li>
+                        <li><strong>Nach Grill-Abend:</strong> Montag kann Gewicht höher sein (Salz/Wasser) - völlig normal!</li>
+                        <li><strong>Fotos machen:</strong> Alle 2 Wochen Fortschrittsfotos</li>
+                        <li><strong>Anpassung:</strong> Zu schnell? → -200 kcal | Zu langsam? → +200 kcal</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- TIPPS -->
+            <div id="tipps" class="tab-content">
+                <h2>Erfolgs-Tipps & Hinweise</h2>
+
+                <div class="tips" style="background: #d4edda; border-color: #28a745;">
+                    <h4 style="color: #155724;">💡 Meal Prep Strategie</h4>
+                    <ul style="color: #155724;">
+                        <li><strong>Sonntag Nachmittag/Abend (nach 6km Lauf):</strong>
+                            <ul style="margin-left: 20px; margin-top: 5px;">
+                                <li>Overnight Oats für Mo-Do vorbereiten (4 Gläser) - mit geriebenem Apfel</li>
+                                <li>Ei-Muffins backen (6 Stück für Fr-Sa Frühstück)</li>
+                                <li>Reis/Quinoa vorkochen (500g für die Woche)</li>
+                                <li>Gemüse waschen, schneiden, portionieren</li>
+                                <li>Grillgut für Samstag marinieren (Freitag kaufen!)</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="tips" style="background: #ffe8e8; border-color: #ff6b6b;">
+                    <h4 style="color: #721c24;">🔥 Samstag Grill-Strategie</h4>
+                    <ul style="color: #721c24;">
+                        <li><strong>Warum das perfekt ist:</strong>
+                            <ul style="margin-left: 20px; margin-top: 5px;">
+                                <li>Tennis Mannschaftsspiel = 3-4h intensive Belastung (~900 kcal)</li>
+                                <li>Höchster Kalorienbedarf der Woche</li>
+                                <li>Soziales Event = psychologisch essentiell</li>
+                                <li>Protein vom Grill = optimal für Muskelaufbau</li>
+                            </ul>
+                        </li>
+                        <li><strong>Smart Grillen:</strong>
+                            <ul style="margin-left: 20px; margin-top: 5px;">
+                                <li>Fokus auf mageres Fleisch (Hähnchen, Pute, Rindersteak)</li>
+                                <li>Viel Grillgemüse (mindestens 300g)</li>
+                                <li>Würste begrenzen (max. 2 Stück - sind sehr fettreich)</li>
+                                <li>BBQ-Sauce sparsam (viel Zucker)</li>
+                                <li>2-3 Bier sind eingeplant und okay!</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="tips" style="background: #d1ecf1; border-color: #17a2b8;">
+                    <h4 style="color: #0c5460;">🍎 Bananen-Alternativen</h4>
+                    <ul style="color: #0c5460;">
+                        <li><strong>Overnight Oats:</strong> Geriebener Apfel + Honig - gleich süß!</li>
+                        <li><strong>Shakes:</strong> Extra Haferflocken + Honig für Cremigkeit</li>
+                        <li><strong>Beeren:</strong> TK-Beeren günstiger und länger haltbar</li>
+                        <li><strong>Nährstoffe:</strong> Äpfel + Beeren = mehr Vitamine als Bananen</li>
+                    </ul>
+                </div>
+
+                <div class="tips" style="background: #fff3cd; border-color: #ffc107;">
+                    <h4 style="color: #856404;">🍺 Döner & Bier (Donnerstag)</h4>
+                    <ul style="color: #856404;">
+                        <li><strong>Psychologische Balance:</strong> Wöchentliche "Cheat Meals" = 80% höheres Durchhalten</li>
+                        <li><strong>Nach 2h Tennis:</strong> Perfektes Timing für Regeneration</li>
+                        <li><strong>Kalorienbilanz:</strong> Passt perfekt ins Tagesbudget</li>
+                        <li><strong>Sozial:</strong> Normales Leben bleibt möglich!</li>
+                    </ul>
+                </div>
+
+                <div class="tips" style="background: #cce5ff; border-color: #004085;">
+                    <h4 style="color: #004085;">🏋️ Training & Ernährung</h4>
+                    <ul style="color: #004085;">
+                        <li><strong>Whey-Timing:</strong> 30-60 Min. nach Freeletics/Laufen</li>
+                        <li><strong>Tennis-Tage:</strong> Ausreichend KH für Energie</li>
+                        <li><strong>Samstag:</strong> Vor Mannschaftsspiel: Energy-Bowl für Power</li>
+                        <li><strong>Sonntag-Lauf:</strong> Aktive Regeneration nach Grill-Abend</li>
+                        <li><strong>Schlaf:</strong> 7-9 Stunden - essentiell!</li>
+                        <li><strong>Hydration:</strong> Mind. 3 Liter/Tag, mehr bei Sport</li>
+                    </ul>
+                </div>
+
+                <h3>📅 Wochenrhythmus Übersicht</h3>
+                <table class="progress-table">
+                    <thead>
+                        <tr>
+                            <th>Tag</th>
+                            <th>Training</th>
+                            <th>Kalorien</th>
+                            <th>Whey</th>
+                            <th>Besonderheit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Montag</td>
+                            <td>Freeletics</td>
+                            <td>3.400</td>
+                            <td>40g</td>
+                            <td>Apfel-Beeren-Oats</td>
+                        </tr>
+                        <tr>
+                            <td>Dienstag</td>
+                            <td>Tennis 1h</td>
+                            <td>3.300</td>
+                            <td>20g</td>
+                            <td>Lachs (Omega-3)</td>
+                        </tr>
+                        <tr>
+                            <td>Mittwoch</td>
+                            <td>Freeletics</td>
+                            <td>3.400</td>
+                            <td>40g</td>
+                            <td>Rindergeschnetzeltes</td>
+                        </tr>
+                        <tr style="background: #fff9e6;">
+                            <td><strong>Donnerstag</strong></td>
+                            <td><strong>Tennis 2h</strong></td>
+                            <td><strong>3.400</strong></td>
+                            <td><strong>20g</strong></td>
+                            <td><strong>🍺 Döner & Bier!</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Freitag</td>
+                            <td>Freeletics</td>
+                            <td>3.450</td>
+                            <td>40g</td>
+                            <td>Asiatisch Protein</td>
+                        </tr>
+                        <tr style="background: #ffe8e8;">
+                            <td><strong>Samstag</strong></td>
+                            <td><strong>Mannschaftsspiel</strong></td>
+                            <td><strong>3.600</strong></td>
+                            <td><strong>20g</strong></td>
+                            <td><strong>🔥 BBQ-ABEND!</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Sonntag</td>
+                            <td>6km Lauf + Prep</td>
+                            <td>3.350</td>
+                            <td>40g</td>
+                            <td>Veggie Bowl + Meal Prep</td>
+                        </tr>
+                        <tr style="background: #e7f3ff; font-weight: bold;">
+                            <td>Durchschnitt</td>
+                            <td>-</td>
+                            <td>3.414</td>
+                            <td>220g/Wo</td>
+                            <td>+0,25-0,3kg/Woche</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>🎯 Meilensteine</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-top: 20px;">
+                    <div class="meal" style="text-align: center;">
+                        <h4>Woche 4</h4>
+                        <p style="font-size: 2em; color: #667eea;">79,7 kg</p>
+                        <p>+1 kg | Plan etabliert</p>
+                    </div>
+                    <div class="meal" style="text-align: center;">
+                        <h4>Woche 8</h4>
+                        <p style="font-size: 2em; color: #667eea;">80,7 kg</p>
+                        <p>+2 kg | Halbzeit!</p>
+                    </div>
+                    <div class="meal" style="text-align: center;">
+                        <h4>Woche 13</h4>
+                        <p style="font-size: 2em; color: #28a745;">82,0 kg</p>
+                        <p>🎉 Ziel erreicht!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button class="print-btn" onclick="window.print()" title="Plan drucken">🖨️</button>
+
+    <script>
+        // Tab Navigation
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+
+            localStorage.setItem('activeTab', tabName);
+        }
+
+        // Load active tab on page load
+        window.addEventListener('load', () => {
+            const activeTab = localStorage.getItem('activeTab') || 'kalkulator';
+            document.getElementById(activeTab).classList.add('active');
+            
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => {
+                if(btn.textContent.includes(activeTab === 'kalkulator' ? 'Kalkulator' : 
+                   activeTab === 'wochenplan' ? 'Wochenplan' :
+                   activeTab === 'einkauf' ? 'Einkaufsliste' :
+                   activeTab === 'tracking' ? 'Fortschritt' : 'Tipps')) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            loadChecklist();
+            loadTracking();
+            loadCalculatorData();
+            document.getElementById('trackDate').valueAsDate = new Date();
+        });
+
+        // Calculator Functions
+        function calculateNeeds() {
+            const weight = parseFloat(document.getElementById('calcWeight').value) || 78.7;
+            const age = parseFloat(document.getElementById('calcAge').value) || 43;
+            const tdeeWatch = parseFloat(document.getElementById('calcTDEE').value) || 0;
+            const steps = parseFloat(document.getElementById('calcSteps').value) || 0;
+            
+            const freeletics = parseFloat(document.getElementById('calcFreeletics').value) || 450;
+            const tennis1 = parseFloat(document.getElementById('calcTennis1').value) || 350;
+            const tennis2 = parseFloat(document.getElementById('calcTennis2').value) || 700;
+            const tennisMatch = parseFloat(document.getElementById('calcTennisMatch').value) || 900;
+            const run = parseFloat(document.getElementById('calcRun').value) || 400;
+
+            saveCalculatorData();
+
+            const bmr = 10 * weight + 6.25 * 189 - 5 * age + 5;
+            const weeklyTraining = (freeletics * 3) + tennis1 + tennis2 + tennisMatch + run;
+            const dailyTrainingAvg = weeklyTraining / 7;
+
+            let tdee;
+            if (tdeeWatch > 0) {
+                tdee = tdeeWatch;
+            } else {
+                const pal = 1.7;
+                tdee = bmr * pal + dailyTrainingAvg;
+            }
+
+            const surplus = tdee * 0.12;
+            const targetCalories = Math.round(tdee + surplus);
+
+            const protein = Math.round(weight * 2);
+            const fat = Math.round(weight * 1.1);
+            const proteinCal = protein * 4;
+            const fatCal = fat * 9;
+            const carbCal = targetCalories - proteinCal - fatCal;
+            const carbs = Math.round(carbCal / 4);
+
+            const mondayCalories = Math.round(targetCalories + freeletics - dailyTrainingAvg);
+            const tuesdayCalories = Math.round(targetCalories + tennis1 - dailyTrainingAvg);
+            const wednesdayCalories = Math.round(targetCalories + freeletics - dailyTrainingAvg);
+            const thursdayCalories = Math.round(targetCalories + tennis2 - dailyTrainingAvg);
+            const fridayCalories = Math.round(targetCalories + freeletics - dailyTrainingAvg);
+            const saturdayCalories = Math.round(targetCalories + tennisMatch - dailyTrainingAvg);
+            const sundayCalories = Math.round(targetCalories + run - dailyTrainingAvg);
+
+            const weeklyAvg = Math.round((mondayCalories + tuesdayCalories + wednesdayCalories + 
+                                         thursdayCalories + fridayCalories + saturdayCalories + sundayCalories) / 7);
+
+            displayResults({
+                bmr, tdee, targetCalories, protein, carbs, fat,
+                mondayCalories, tuesdayCalories, wednesdayCalories,
+                thursdayCalories, fridayCalories, saturdayCalories, sundayCalories,
+                weeklyAvg, steps
+            });
+        }
+
+        function displayResults(data) {
+            const resultsDiv = document.getElementById('calculatorResults');
+            
+            let stepsInfo = '';
+            if (data.steps > 0) {
+                let stepsStatus = '';
+                if (data.steps < 8000) {
+                    stepsStatus = '<span style="color: #dc3545;">⚠️ Zu wenig - versuche 10.000+ zu erreichen</span>';
+                } else if (data.steps < 12000) {
+                    stepsStatus = '<span style="color: #ffc107;">👍 Gut - optimal wären 12.000+</span>';
+                } else {
+                    stepsStatus = '<span style="color: #28a745;">✅ Perfekt!</span>';
+                }
+                stepsInfo = `<p><strong>Schritte-Analyse:</strong> ${data.steps.toLocaleString()} Schritte/Tag ${stepsStatus}</p>`;
+            }
+
+            const currentPlan = 3414;
+            const difference = data.weeklyAvg - currentPlan;
+            let recommendation = '';
+            
+            if (Math.abs(difference) < 100) {
+                recommendation = `
+                    <div class="success-box">
+                        <h4>✅ Perfekt! Der Plan passt zu dir.</h4>
+                        <p>Dein berechneter Kalorienbedarf liegt bei <strong>${data.weeklyAvg} kcal/Tag</strong>, der Plan bei <strong>3.414 kcal</strong>.</p>
+                        <p>Das ist nur ${Math.abs(difference)} kcal Unterschied - vernachlässigbar!</p>
+                    </div>
+                `;
+            } else if (difference > 0) {
+                recommendation = `
+                    <div class="warning-box">
+                        <h4>⚡ Anpassung empfohlen: Mehr Kalorien</h4>
+                        <p>Dein Bedarf liegt ca. <strong>${difference} kcal</strong> höher als der Plan.</p>
+                        <p><strong>Empfehlung:</strong></p>
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li>Füge täglich 1 zusätzlichen Snack hinzu</li>
+                            <li>Samstag beim Grillen: Extra Portion nehmen</li>
+                            <li>Größere Portionen Reis/Nudeln</li>
+                        </ul>
+                    </div>
+                `;
+            } else {
+                recommendation = `
+                    <div class="warning-box">
+                        <h4>⚡ Anpassung empfohlen: Weniger Kalorien</h4>
+                        <p>Dein Bedarf liegt ca. <strong>${Math.abs(difference)} kcal</strong> niedriger als der Plan.</p>
+                        <p><strong>Empfehlung:</strong></p>
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li>Reduziere KH leicht (-30g Reis/Nudeln)</li>
+                            <li>Samstag beim Grillen: Kleinere Portionen Beilagen</li>
+                            <li>Donnerstag: Döner bleibt! 🍺</li>
+                        </ul>
+                    </div>
+                `;
+            }
+
+            resultsDiv.innerHTML = `
+                <h3 style="margin-top: 30px;">📊 Deine persönlichen Ergebnisse</h3>
+                
+                <div class="calc-grid">
+                    <div class="calc-result">
+                        <h4>Grundumsatz (BMR)</h4>
+                        <div class="big-number">${Math.round(data.bmr)}</div>
+                        <div class="small-text">kcal/Tag</div>
+                    </div>
+                    
+                    <div class="calc-result">
+                        <h4>Gesamtumsatz (TDEE)</h4>
+                        <div class="big-number">${Math.round(data.tdee)}</div>
+                        <div class="small-text">kcal/Tag (Ø)</div>
+                    </div>
+                    
+                    <div class="calc-result">
+                        <h4>Lean Bulk Bedarf</h4>
+                        <div class="big-number">${data.targetCalories}</div>
+                        <div class="small-text">kcal/Tag (+12% Surplus)</div>
+                    </div>
+                    
+                    <div class="calc-result">
+                        <h4>Wöchentlicher Schnitt</h4>
+                        <div class="big-number">${data.weeklyAvg}</div>
+                        <div class="small-text">kcal/Tag (inkl. Training)</div>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 30px;">🍽️ Makronährstoff-Empfehlung</h3>
+                <div class="calc-grid">
+                    <div class="calc-result">
+                        <h4>💪 Protein</h4>
+                        <div class="big-number">${data.protein}g</div>
+                        <div class="small-text">~${Math.round((data.protein * 4 / data.targetCalories) * 100)}% der Kalorien</div>
+                    </div>
+                    
+                    <div class="calc-result">
+                        <h4>🍞 Kohlenhydrate</h4>
+                        <div class="big-number">${data.carbs}g</div>
+                        <div class="small-text">~${Math.round((data.carbs * 4 / data.targetCalories) * 100)}% der Kalorien</div>
+                    </div>
+                    
+                    <div class="calc-result">
+                        <h4>🥑 Fette</h4>
+                        <div class="big-number">${data.fat}g</div>
+                        <div class="small-text">~${Math.round((data.fat * 9 / data.targetCalories) * 100)}% der Kalorien</div>
+                    </div>
+                </div>
+
+                ${stepsInfo}
+
+                <h3 style="margin-top: 30px;">📅 Dein optimierter Wochenplan</h3>
+                <table class="progress-table">
+                    <thead>
+                        <tr>
+                            <th>Tag</th>
+                            <th>Training</th>
+                            <th>Empfohlene Kalorien</th>
+                            <th>Aktueller Plan</th>
+                            <th>Differenz</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Montag</td>
+                            <td>Freeletics</td>
+                            <td>${data.mondayCalories} kcal</td>
+                            <td>3.400 kcal</td>
+                            <td style="color: ${3400-data.mondayCalories > 0 ? '#28a745' : '#dc3545'}">${3400-data.mondayCalories > 0 ? '+' : ''}${3400-data.mondayCalories}</td>
+                        </tr>
+                        <tr>
+                            <td>Dienstag</td>
+                            <td>Tennis 1h</td>
+                            <td>${data.tuesdayCalories} kcal</td>
+                            <td>3.300 kcal</td>
+                            <td style="color: ${3300-data.tuesdayCalories > 0 ? '#28a745' : '#dc3545'}">${3300-data.tuesdayCalories > 0 ? '+' : ''}${3300-data.tuesdayCalories}</td>
+                        </tr>
+                        <tr>
+                            <td>Mittwoch</td>
+                            <td>Freeletics</td>
+                            <td>${data.wednesdayCalories} kcal</td>
+                            <td>3.400 kcal</td>
+                            <td style="color: ${3400-data.wednesdayCalories > 0 ? '#28a745' : '#dc3545'}">${3400-data.wednesdayCalories > 0 ? '+' : ''}${3400-data.wednesdayCalories}</td>
+                        </tr>
+                        <tr style="background: #fff9e6;">
+                            <td><strong>Donnerstag</strong></td>
+                            <td><strong>Tennis 2h</strong></td>
+                            <td><strong>${data.thursdayCalories} kcal</strong></td>
+                            <td><strong>3.400 kcal 🍺</strong></td>
+                            <td style="color: ${3400-data.thursdayCalories > 0 ? '#28a745' : '#dc3545'}"><strong>${3400-data.thursdayCalories > 0 ? '+' : ''}${3400-data.thursdayCalories}</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Freitag</td>
+                            <td>Freeletics</td>
+                            <td>${data.fridayCalories} kcal</td>
+                            <td>3.450 kcal</td>
+                            <td style="color: ${3450-data.fridayCalories > 0 ? '#28a745' : '#dc3545'}">${3450-data.fridayCalories > 0 ? '+' : ''}${3450-data.fridayCalories}</td>
+                        </tr>
+                        <tr style="background: #ffe8e8;">
+                            <td><strong>Samstag</strong></td>
+                            <td><strong>Mannschaftsspiel</strong></td>
+                            <td><strong>${data.saturdayCalories} kcal</strong></td>
+                            <td><strong>3.600 kcal 🔥</strong></td>
+                            <td style="color: ${3600-data.saturdayCalories > 0 ? '#28a745' : '#dc3545'}"><strong>${3600-data.saturdayCalories > 0 ? '+' : ''}${3600-data.saturdayCalories}</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Sonntag</td>
+                            <td>6km Lauf</td>
+                            <td>${data.sundayCalories} kcal</td>
+                            <td>3.350 kcal</td>
+                            <td style="color: ${3350-data.sundayCalories > 0 ? '#28a745' : '#dc3545'}">${3350-data.sundayCalories > 0 ? '+' : ''}${3350-data.sundayCalories}</td>
+                        </tr>
+                        <tr style="background: #e7f3ff; font-weight: bold;">
+                            <td>Durchschnitt</td>
+                            <td>-</td>
+                            <td>${data.weeklyAvg} kcal</td>
+                            <td>3.414 kcal</td>
+                            <td style="color: ${3414-data.weeklyAvg > 0 ? '#28a745' : '#dc3545'}">${3414-data.weeklyAvg > 0 ? '+' : ''}${3414-data.weeklyAvg}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                ${recommendation}
+
+                <div class="info-box" style="margin-top: 20px;">
+                    <h4>💡 Wichtig zu wissen:</h4>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li>Diese Berechnung ist eine <strong>Schätzung</strong></li>
+                        <li>Nach 2-3 Wochen anhand Gewichtsentwicklung anpassen</li>
+                        <li>Ziel: <strong>+0,25 kg pro Woche</strong></li>
+                        <li>Samstag = höchster Kalorienbedarf (Mannschaftsspiel!)</li>
+                    </ul>
+                </div>
+            `;
+
+            document.getElementById('avgCaloriesDisplay').textContent = data.weeklyAvg + ' kcal';
+        }
+
+        function saveCalculatorData() {
+            const data = {
+                weight: document.getElementById('calcWeight').value,
+                age: document.getElementById('calcAge').value,
+                tdee: document.getElementById('calcTDEE').value,
+                steps: document.getElementById('calcSteps').value,
+                freeletics: document.getElementById('calcFreeletics').value,
+                tennis1: document.getElementById('calcTennis1').value,
+                tennis2: document.getElementById('calcTennis2').value,
+                tennisMatch: document.getElementById('calcTennisMatch').value,
+                run: document.getElementById('calcRun').value
+            };
+            localStorage.setItem('calculatorData', JSON.stringify(data));
+        }
+
+        function loadCalculatorData() {
+            const saved = localStorage.getItem('calculatorData');
+            if (saved) {
+                const data = JSON.parse(saved);
+                document.getElementById('calcWeight').value = data.weight || 78.7;
+                document.getElementById('calcAge').value = data.age || 43;
+                document.getElementById('calcTDEE').value = data.tdee || '';
+                document.getElementById('calcSteps').value = data.steps || '';
+                document.getElementById('calcFreeletics').value = data.freeletics || 450;
+                document.getElementById('calcTennis1').value = data.tennis1 || 350;
+                document.getElementById('calcTennis2').value = data.tennis2 || 700;
+                document.getElementById('calcTennisMatch').value = data.tennisMatch || 900;
+                document.getElementById('calcRun').value = data.run || 400;
+            }
+        }
+
+        function loadChecklist() {
+            const checkboxes = document.querySelectorAll('.category-items input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                const saved = localStorage.getItem('check_' + checkbox.id);
+                if (saved === 'true') {
+                    checkbox.checked = true;
+                }
+                
+                checkbox.addEventListener('change', () => {
+                    localStorage.setItem('check_' + checkbox.id, checkbox.checked);
+                });
+            });
+        }
+
+        function clearChecklist() {
+            const checkboxes = document.querySelectorAll('.category-items input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = false;
+                localStorage.setItem('check_' + checkbox.id, 'false');
+            });
+        }
+
+        let trackingData = [];
+
+        function loadTracking() {
+            const saved = localStorage.getItem('trackingData');
+            if (saved) {
+                trackingData = JSON.parse(saved);
+                updateTrackingDisplay();
+            }
+        }
+
+        function saveTracking() {
+            localStorage.setItem('trackingData', JSON.stringify(trackingData));
+        }
+
+        function addTracking() {
+            const date = document.getElementById('trackDate').value;
+            const weight = parseFloat(document.getElementById('trackWeight').value);
+            const notes = document.getElementById('trackNotes').value;
+
+            if (!date || !weight) {
+                alert('Bitte Datum und Gewicht eingeben!');
+                return;
+            }
+
+            trackingData.push({
+                date: date,
+                weight: weight,
+                notes: notes
+            });
+
+            trackingData.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+            saveTracking();
+            updateTrackingDisplay();
+
+            document.getElementById('trackWeight').value = '';
+            document.getElementById('trackNotes').value = '';
+            document.getElementById('trackDate').valueAsDate = new Date();
+
+            alert('✅ Eintrag gespeichert!');
+        }
+
+        function deleteTracking(index) {
+            if (confirm('Eintrag wirklich löschen?')) {
+                trackingData.splice(index, 1);
+                saveTracking();
+                updateTrackingDisplay();
+            }
+        }
+
+        function updateTrackingDisplay() {
+            updateTable();
+            updateChart();
+        }
+
+        function updateTable() {
+            const tbody = document.getElementById('trackingTableBody');
+            
+            if (trackingData.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: #999;">Keine Einträge vorhanden</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = '';
+            trackingData.forEach((entry, index) => {
+                const row = tbody.insertRow();
+                
+                const dateCell = row.insertCell(0);
+                const date = new Date(entry.date);
+                dateCell.textContent = date.toLocaleDateString('de-DE');
+
+                const weightCell = row.insertCell(1);
+                weightCell.textContent = entry.weight.toFixed(1) + ' kg';
+
+                const changeCell = row.insertCell(2);
+                if (index > 0) {
+                    const change = entry.weight - trackingData[index - 1].weight;
+                    changeCell.textContent = (change >= 0 ? '+' : '') + change.toFixed(1) + ' kg';
+                    changeCell.style.color = change >= 0 ? '#28a745' : '#dc3545';
+                    changeCell.style.fontWeight = 'bold';
+                } else {
+                    changeCell.textContent = '-';
+                }
+
+                const goalCell = row.insertCell(3);
+                const toGoal = 82 - entry.weight;
+                goalCell.textContent = toGoal.toFixed(1) + ' kg';
+                if (toGoal <= 0) {
+                    goalCell.textContent = '🎉 Ziel erreicht!';
+                    goalCell.style.color = '#28a745';
+                    goalCell.style.fontWeight = 'bold';
+                }
+
+                const notesCell = row.insertCell(4);
+                notesCell.textContent = entry.notes || '-';
+                notesCell.style.fontStyle = 'italic';
+
+                const actionCell = row.insertCell(5);
+                const deleteBtn = document.createElement('button');
+                deleteBtn.textContent = '🗑️';
+                deleteBtn.className = 'delete-btn';
+                deleteBtn.onclick = () => deleteTracking(index);
+                actionCell.appendChild(deleteBtn);
+            });
+        }
+
+        function updateChart() {
+            const container = document.getElementById('chartContainer');
+            
+            if (trackingData.length === 0) {
+                container.innerHTML = '<div style="text-align: center; width: 100%; color: #999;">Noch keine Einträge. Füge deine erste Messung hinzu!</div>';
+                return;
+            }
+
+            const weights = trackingData.map(d => d.weight);
+            const minWeight = Math.min(...weights, 78.7);
+            const maxWeight = Math.max(...weights, 82);
+            const range = maxWeight - minWeight;
+
+            container.innerHTML = '';
+            container.style.position = 'relative';
+
+            trackingData.forEach((entry, index) => {
+                const bar = document.createElement('div');
+                bar.className = 'bar';
+                const heightPercent = ((entry.weight - minWeight) / range) * 100;
+                bar.style.height = Math.max(heightPercent, 10) + '%';
+
+                const label = document.createElement('div');
+                label.className = 'bar-label';
+                const date = new Date(entry.date);
+                label.textContent = date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' });
+
+                const value = document.createElement('div');
+                value.className = 'bar-value';
+                value.textContent = entry.weight.toFixed(1);
+
+                bar.appendChild(label);
+                bar.appendChild(value);
+                container.appendChild(bar);
+            });
+        }
+    </script>
+</body>
+</html>
+```
+
+**🎾🔥 Perfekt angepasst!**
+
+### ✅ **Was sich geändert hat:**
+
+**SAMSTAG - Neuer Highlight-Tag:**
+- 🎾 **Tennis Mannschaftsspiel** (Einzel + Doppel = 3-4h = ~900 kcal)
+- 🔥 **BBQ-Abend** danach mit der Mannschaft
+- **3.600 kcal** (höchster Tag der Woche!)
+- Detailliertes Grill-Menü:
+  - 250g Rindersteak
+  - 200g Hähnchen/Putenspieße
+  - 2 Bratwürste
+  - Viel Grillgemüse
+  - Folienkartoffeln
+  - 2-3 Bier 🍺
+
+**SONNTAG - Jetzt Lauftag:**
+- 🏃 **6km Lauf** am Vormittag (statt Samstag)
+- **Post-Run Shake** danach
+- **Meal Prep** Nachmittag/Abend
+- **3.350 kcal**
+- Veggie-Bowl zum Regenerieren
+
+**KALKULATOR:**
+- Neues Feld: **Tennis Mannschaftsspiel** (Standard 900 kcal)
+- Angepasste Berechnung mit neuem Wochenrhythmus
+
+**EINKAUFSLISTE:**
+- Neue Kategorie: **Samstag Grillgut** 🔥
+- Alles fürs BBQ inkl. Marinaden
+- Budget-Hinweis: ~70-85€/Woche
+- Tipp: Grillkosten mit Mannschaft teilen!
+
+**WOCHENSCHNITT:**
+- Neu: **~3.414 kcal/Tag** (statt 3.360)
+- Perfekt für +0,25-0,3 kg/Woche
+
+### 🎯 **Deine Wochenend-Routine:**
+- **Do:** Döner & 2 Bier nach Tennis 2h 🍺
+- **Sa:** BBQ nach Mannschaftsspiel 🔥
+- **So:** 6km Lauf + Meal Prep 🏃
+
+Viel Erfolg beim Grillen! 🎾🔥💪
