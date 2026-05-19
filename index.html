@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monaco Stadtrallye 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #B8922A;
+    --gold-light: #D4A840;
+    --gold-pale: #FBF0D8;
+    --red: #8B1A2C;
+    --page-bg: #F0E8D4;
+    --card-bg: #FFFDF8;
+    --card-border: #DDD0B4;
+    --text-main: #1A1008;
+    --text-muted: #5C4F3A;
+    --text-light: #8A7A62;
+    --green: #2A6B45;
+    --blue: #1E5080;
+    --dark: #0D0802;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--page-bg); color:var(--text-main); font-family:'Inter',sans-serif; min-height:100vh; }
+
+  /* ═══════════════════════════
+     COVER – hoher Kontrast
+  ═══════════════════════════ */
+  .cover {
+    min-height:100vh;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; position:relative; overflow:hidden;
+    background:#0D0802;
+  }
+  .cover::before {
+    content:''; position:absolute; inset:0; pointer-events:none;
+    background:radial-gradient(ellipse 70% 55% at 50% 50%, rgba(184,146,42,.22) 0%, transparent 70%);
+  }
+  .cover::after {
+    content:''; position:absolute; inset:0; pointer-events:none;
+    background-image:
+      repeating-linear-gradient(0deg,transparent,transparent 49px,rgba(232,201,122,.05) 50px),
+      repeating-linear-gradient(90deg,transparent,transparent 49px,rgba(232,201,122,.05) 50px);
+  }
+
+  .cover-inner {
+    position:relative; z-index:3;
+    display:flex; flex-direction:column; align-items:center;
+    padding:3rem 2rem; max-width:680px;
+  }
+
+  .cover-badge {
+    font-size:.68rem; font-weight:700; letter-spacing:.5em; text-transform:uppercase;
+    color:#E8C97A; border:1px solid rgba(232,201,122,.4);
+    background:rgba(232,201,122,.1); padding:.55rem 1.8rem; margin-bottom:2.5rem;
+  }
+
+  .cover-title {
+    font-family:'Playfair Display',serif;
+    font-size:clamp(4.5rem,13vw,9rem);
+    font-weight:900; line-height:.82; color:#FFFFFF;
+  }
+  .cover-title .sub {
+    display:block; font-style:italic; font-weight:400;
+    font-size:.38em; color:#E8C97A; letter-spacing:.08em; margin-top:.55rem;
+  }
+
+  .cover-rule {
+    width:180px; height:1px;
+    background:linear-gradient(90deg,transparent,#E8C97A,transparent);
+    margin:2.5rem 0;
+  }
+
+  .cover-grid {
+    display:grid; grid-template-columns:1fr 1fr 1fr;
+    gap:0; margin-bottom:3rem; width:100%;
+    border:1px solid rgba(232,201,122,.25);
+  }
+  .cover-grid-item {
+    padding:1.2rem .8rem; border-right:1px solid rgba(232,201,122,.2);
+  }
+  .cover-grid-item:last-child { border-right:none; }
+  .cgi-label {
+    font-size:.58rem; font-weight:700; letter-spacing:.3em; text-transform:uppercase;
+    color:rgba(232,201,122,.5); display:block; margin-bottom:.5rem;
+  }
+  .cgi-value {
+    font-family:'Playfair Display',serif; font-size:1rem;
+    color:#FFFFFF; font-weight:700; line-height:1.2;
+  }
+
+  .start-btn {
+    background:#E8C97A; border:none; color:#0D0802;
+    padding:1.1rem 4rem; font-family:'Inter',sans-serif;
+    font-size:.82rem; font-weight:700; letter-spacing:.3em;
+    text-transform:uppercase; cursor:pointer; transition:all .25s;
+  }
+  .start-btn:hover { background:#fff; transform:translateY(-1px); }
+
+  /* ═══════════════════════════
+     CONTENT
+  ═══════════════════════════ */
+  .content { display:none; }
+  .content.visible { display:block; }
+
+  .page-header {
+    background:#0D0802; padding:1rem 2rem; text-align:center;
+    border-bottom:2px solid var(--gold); position:sticky; top:0; z-index:100;
+  }
+  .page-header h2 {
+    font-family:'Playfair Display',serif; font-size:.95rem;
+    color:#E8C97A; letter-spacing:.2em;
+  }
+
+  /* INTRO */
+  .intro { max-width:820px; margin:3.5rem auto; padding:0 1.5rem; text-align:center; }
+  .intro h3 { font-family:'Playfair Display',serif; font-size:2rem; color:var(--text-main); margin-bottom:1rem; }
+  .intro p { font-size:.92rem; line-height:1.85; color:var(--text-muted); margin-bottom:.8rem; }
+  .gold-line { width:120px; height:2px; background:linear-gradient(90deg,transparent,var(--gold),transparent); margin:2rem auto; }
+
+  .rules-box {
+    background:var(--card-bg); border:1px solid var(--card-border);
+    border-left:4px solid var(--gold);
+    padding:1.8rem 2rem; margin:2rem 0; text-align:left;
+    box-shadow:0 2px 12px rgba(0,0,0,.06);
+  }
+  .rules-box h4 { font-family:'Playfair Display',serif; font-size:1.05rem; color:var(--text-main); margin-bottom:1rem; }
+  .rules-box ul { list-style:none; display:flex; flex-direction:column; gap:.7rem; }
+  .rules-box li { font-size:.88rem; color:var(--text-muted); padding-left:1.3rem; position:relative; line-height:1.6; }
+  .rules-box li::before { content:'◆'; position:absolute; left:0; color:var(--gold); font-size:.5rem; top:.38em; }
+  .rules-box li strong { color:var(--text-main); }
+
+  /* ═══════════════════════════
+     STATION CARDS
+  ═══════════════════════════ */
+  .stations { max-width:820px; margin:0 auto; padding:0 1.5rem 6rem; }
+  .stations-title { font-family:'Playfair Display',serif; font-size:1.4rem; color:var(--text-main); text-align:center; margin-bottom:2.5rem; }
+  .stations-title span { color:var(--gold); font-style:italic; }
+
+  .station-card {
+    background:var(--card-bg); border:1px solid var(--card-border);
+    margin-bottom:3rem; box-shadow:0 4px 24px rgba(0,0,0,.09); overflow:hidden;
+  }
+
+  /* ── Foto-Bereich oben ── */
+  .station-photo-area {
+    width:100%; aspect-ratio:16/7; position:relative; overflow:hidden;
+    background:#1A1008;
+    display:flex; align-items:center; justify-content:center;
+    flex-direction:column; gap:.8rem;
+    border-bottom:2px solid var(--gold);
+    cursor:pointer;
+  }
+  .station-photo-area.has-photo { cursor:default; }
+  .station-photo-area img.uploaded-photo {
+    width:100%; height:100%; object-fit:cover; display:none; position:absolute; inset:0;
+  }
+  .station-photo-area.has-photo img.uploaded-photo { display:block; }
+
+  /* Placeholder-Inhalt */
+  .photo-placeholder {
+    display:flex; flex-direction:column; align-items:center; gap:.7rem;
+    pointer-events:none;
+  }
+  .station-photo-area.has-photo .photo-placeholder { display:none; }
+
+  .photo-icon { font-size:2.8rem; opacity:.5; }
+  .photo-hint {
+    font-size:.78rem; font-weight:600; letter-spacing:.18em; text-transform:uppercase;
+    color:rgba(232,201,122,.7);
+  }
+  .photo-sub {
+    font-size:.72rem; color:rgba(255,255,255,.35); max-width:280px; line-height:1.5; text-align:center;
+  }
+
+  /* Overlay-Label wenn Foto da */
+  .photo-overlay {
+    position:absolute; bottom:0; left:0; right:0;
+    background:linear-gradient(transparent, rgba(10,6,2,.8));
+    padding:1.5rem 1.5rem .9rem;
+    display:none;
+  }
+  .station-card .station-number-overlay {
+    font-size:.62rem; font-weight:700; letter-spacing:.3em; color:rgba(232,201,122,.7);
+    text-transform:uppercase; display:block; margin-bottom:.25rem;
+  }
+  .station-card .station-name-overlay {
+    font-family:'Playfair Display',serif; font-size:1.3rem; color:#fff;
+  }
+  .station-photo-area.has-photo .photo-overlay { display:block; }
+
+  /* Upload-Knopf */
+  .photo-upload-label {
+    position:absolute; inset:0; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .photo-upload-label input[type=file] { display:none; }
+  .station-photo-area.has-photo .photo-upload-label { display:none; }
+
+  .change-photo-btn {
+    position:absolute; top:.75rem; right:.75rem;
+    background:rgba(13,8,2,.75); border:1px solid rgba(232,201,122,.4);
+    color:#E8C97A; padding:.4rem .9rem;
+    font-family:'Inter',sans-serif; font-size:.68rem; font-weight:600;
+    letter-spacing:.12em; text-transform:uppercase; cursor:pointer;
+    display:none; z-index:5;
+  }
+  .station-photo-area.has-photo .change-photo-btn { display:block; }
+
+  /* ── Station-Header ── */
+  .station-header {
+    display:flex; align-items:stretch; border-bottom:1px solid var(--card-border);
+  }
+  .station-num {
+    background:var(--gold); color:#fff;
+    font-family:'Playfair Display',serif; font-size:2rem; font-weight:900;
+    width:68px; min-width:68px;
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .station-meta { padding:1.1rem 1.5rem; flex:1; }
+  .station-name { font-family:'Playfair Display',serif; font-size:1.2rem; color:var(--text-main); margin-bottom:.25rem; line-height:1.3; }
+  .station-subtitle { font-size:.78rem; color:var(--text-muted); font-style:italic; }
+  .free-badge { display:inline-block; background:rgba(42,107,69,.1); border:1px solid rgba(42,107,69,.3); color:var(--green); font-size:.6rem; letter-spacing:.1em; text-transform:uppercase; padding:.1rem .45rem; margin-left:.4rem; vertical-align:middle; font-style:normal; }
+  .paid-badge { display:inline-block; background:rgba(139,26,44,.1); border:1px solid rgba(139,26,44,.3); color:var(--red); font-size:.6rem; letter-spacing:.1em; text-transform:uppercase; padding:.1rem .45rem; margin-left:.4rem; vertical-align:middle; font-style:normal; }
+
+  /* ── Aufgabe ── */
+  .station-body { padding:1.5rem; }
+  .station-context {
+    font-size:.88rem; line-height:1.8; color:var(--text-muted);
+    margin-bottom:1.4rem; padding-bottom:1.2rem;
+    border-bottom:1px solid var(--card-border);
+  }
+
+  .task-box {
+    background:#FAF7F0; border:1px solid var(--card-border);
+    border-left:4px solid var(--blue);
+    padding:1.2rem 1.3rem;
+  }
+  .task-box-label {
+    font-size:.65rem; font-weight:700; letter-spacing:.28em;
+    text-transform:uppercase; color:var(--blue); margin-bottom:.7rem; display:block;
+  }
+  .task-question {
+    font-size:.92rem; line-height:1.7; color:var(--text-main);
+    font-weight:500; margin-bottom:.9rem;
+  }
+  .task-question em { color:var(--blue); font-style:normal; font-weight:700; }
+  .answer-field {
+    width:100%; background:#fff; border:1.5px solid var(--card-border);
+    padding:.75rem .9rem; color:var(--text-main);
+    font-family:'Inter',sans-serif; font-size:.88rem;
+    resize:vertical; min-height:80px; line-height:1.6;
+  }
+  .answer-field::placeholder { color:var(--text-light); }
+  .answer-field:focus { outline:none; border-color:var(--gold); }
+
+  .task-checkbox-row {
+    display:flex; align-items:center; gap:.7rem; margin-top:.8rem;
+  }
+  .task-checkbox {
+    width:22px; height:22px; border:2px solid var(--card-border);
+    flex-shrink:0; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    transition:all .2s; user-select:none; font-size:.8rem; background:#fff;
+  }
+  .task-checkbox.checked { background:var(--gold); border-color:var(--gold); color:#fff; }
+  .task-checkbox-label { font-size:.78rem; color:var(--text-muted); }
+
+  /* Photo count */
+  .photo-status {
+    font-size:.75rem; font-weight:600; color:var(--green);
+    margin-top:.6rem; min-height:1.1em; text-align:center; padding:.3rem;
+  }
+
+  /* ── Final / Abschluss ── */
+  .final-box {
+    background:#0D0802; border:1px solid var(--gold);
+    padding:2.5rem; text-align:center; margin-bottom:2rem;
+    box-shadow:0 4px 24px rgba(0,0,0,.2);
+  }
+  .final-box h3 { font-family:'Playfair Display',serif; color:#E8C97A; font-size:1.6rem; margin-bottom:.8rem; }
+  .final-box p { font-size:.88rem; color:#8A7060; line-height:1.9; }
+  .final-box strong { color:#E8C97A; }
+
+  .print-btn {
+    display:inline-block; margin:1.5rem auto 3rem;
+    background:none; border:1.5px solid var(--text-light); color:var(--text-muted);
+    padding:.7rem 2.2rem; font-family:'Inter',sans-serif; font-size:.75rem;
+    font-weight:600; letter-spacing:.22em; text-transform:uppercase; cursor:pointer; transition:all .3s;
+  }
+  .print-btn:hover { border-color:var(--gold); color:var(--gold); }
+
+  /* Score */
+  .score-tracker {
+    position:fixed; bottom:1.5rem; right:1.5rem;
+    background:#0D0802; border:2px solid var(--gold);
+    padding:.9rem 1.5rem; text-align:center; z-index:200;
+    box-shadow:0 4px 24px rgba(0,0,0,.5);
+  }
+  .score-tracker .s-label { font-size:.6rem; letter-spacing:.2em; color:#5A4A38; text-transform:uppercase; font-weight:600; }
+  .score-tracker .s-value { font-family:'Playfair Display',serif; font-size:2rem; color:#E8C97A; line-height:1.1; }
+
+  @media print {
+    .cover,.page-header,.score-tracker,.print-btn { display:none!important; }
+    .content { display:block!important; }
+    body { background:#fff; }
+    .station-card { break-inside:avoid; box-shadow:none; }
+    .photo-upload-label,.change-photo-btn { display:none!important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════ COVER ═══════════ -->
+<div class="cover" id="cover">
+  <div class="cover-inner">
+    <div class="cover-badge">Gymnasium · Klasse 12 · Schulausflug</div>
+
+    <div class="cover-title">
+      Monaco
+      <span class="sub">Stadtrallye</span>
+    </div>
+
+    <div class="cover-rule"></div>
+
+    <div class="cover-grid">
+      <div class="cover-grid-item">
+        <span class="cgi-label">Datum</span>
+        <span class="cgi-value">19. Mai 2026</span>
+      </div>
+      <div class="cover-grid-item">
+        <span class="cgi-label">Zeit</span>
+        <span class="cgi-value">10:00 – 17:00</span>
+      </div>
+      <div class="cover-grid-item">
+        <span class="cgi-label">Stationen</span>
+        <span class="cgi-value">8 Orte</span>
+      </div>
+    </div>
+
+    <button class="start-btn" onclick="startRallye()">▶ Rallye starten</button>
+  </div>
+</div>
+
+<!-- ═══════════ CONTENT ═══════════ -->
+<div class="content" id="content">
+  <div class="page-header">
+    <h2>Monaco Stadtrallye &mdash; 19. Mai 2026</h2>
+  </div>
+
+  <!-- Intro -->
+  <div class="intro">
+    <div class="gold-line"></div>
+    <h3 style="margin-top:1.5rem">Willkommen im Fürstentum Monaco</h3>
+    <p style="margin-top:.8rem">Monaco ist mit 2,08 km² der zweitkleinste Staat der Welt. Erkundet die 8 Stationen in beliebiger Reihenfolge. An jeder Station: ein <strong>Teamfoto vor Ort</strong> und eine <strong>Beobachtungsaufgabe</strong>, die ihr nur durch genaues Hinschauen lösen könnt – <strong>kein Googeln!</strong></p>
+
+    <div class="rules-box">
+      <h4>📋 Spielregeln</h4>
+      <ul>
+        <li>Gruppen von <strong>3–4 Personen</strong> – alle bleiben zusammen.</li>
+        <li><strong>Freie Reihenfolge</strong> – besucht die 8 Stationen wie ihr möchtet.</li>
+        <li>Pro Station: <strong>Teamfoto hochladen</strong> + <strong>Frage beantworten</strong>. Nur das, was ihr vor Ort seht – kein Internet!</li>
+        <li>Begründete Schätzungen zählen voll. Beobachtungsgabe schlägt Vorwissen.</li>
+        <li><strong>Treffpunkt 17:00 Uhr:</strong> Port Hercule, großer Brunnen am Eingang.</li>
+        <li>Meiste Punkte gewinnt – Ehrenwort zählt!</li>
+      </ul>
+    </div>
+    <div class="gold-line"></div>
+  </div>
+
+  <!-- Stations -->
+  <div class="stations">
+    <p class="stations-title">Eure <span>8 Stationen</span> – in beliebiger Reihenfolge</p>
+
+    <!-- ═══ STATION 1: Port Hercule ═══ -->
+    <div class="station-card">
+      <div class="station-photo-area" id="area1">
+        <img class="uploaded-photo" id="img1" alt="Teamfoto Port Hercule">
+        <div class="photo-placeholder">
+          <div class="photo-icon">📷</div>
+          <div class="photo-hint">Teamfoto hochladen</div>
+          <div class="photo-sub">Macht ein Foto von euch am Hafenkai mit den Yachten im Hintergrund</div>
+        </div>
+        <div class="photo-overlay">
+          <span class="station-number-overlay">Station 1</span>
+          <span class="station-name-overlay">Port Hercule – Yachthafen</span>
+        </div>
+        <label class="photo-upload-label"><input type="file" accept="image/*" onchange="uploadPhoto(this,'area1','img1','status1')"></label>
+        <button class="change-photo-btn" onclick="triggerChange('area1')">↺ Foto ändern</button>
+      </div>
+      <div class="photo-status" id="status1"></div>
+
+      <div class="station-header">
+        <div class="station-num">1</div>
+        <div class="station-meta">
+          <div class="station-name">Port Hercule – Yachthafen <span class="free-badge">kostenlos</span></div>
+          <div class="station-subtitle">Der einzige Tiefwasserhafen Monacos · Kulisse des Formel-1-Rennens</div>
+        </div>
+      </div>
+      <div class="station-body">
+        <p class="station-context">Der Port Hercule beherbergt einige der größten und teuersten Privatyachten der Welt. Von hier seht ihr den Rocher mit der Altstadt, die Rennstrecke und die gesamte Küstensilhouette Monacos.</p>
+        <div class="task-box">
+          <span class="task-box-label">✦ Aufgabe – nur vor Ort lösbar</span>
+          <p class="task-question">Zählt die Yachten im sichtbaren Hafenbereich und notiert, wie viele verschiedene <em>Nationalflaggen</em> ihr entdeckt. Wählt dann eine Yacht aus und beschreibt drei konkrete Details, die sie von einem normalen Freizeitboot unterscheiden.</p>
+          <textarea class="answer-field" placeholder="Anzahl Yachten: ___ | Verschiedene Flaggen: ___ | Erkannte Länder: ...&#10;Gewählte Yacht – Detail 1: ...&#10;Detail 2: ...&#10;Detail 3: ..." rows="5"></textarea>
+          <div class="task-checkbox-row">
+            <div class="task-checkbox" onclick="toggle(this,3)"></div>
+            <span class="task-checkbox-label">Aufgabe abgehakt (3 Punkte)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ STATION 2: Cathédrale ═══ -->
+    <div class="station-card">
+      <div class="station-photo-area" id="area2">
+        <img class="uploaded-photo" id="img2" alt="Teamfoto Kathedrale">
+        <div class="photo-placeholder">
+          <div class="photo-icon">📷</div>
+          <div class="photo-hint">Teamfoto hochladen</div>
+          <div class="photo-sub">Foto vor dem Hauptportal der Kathedrale – alle zeigen mit den Armen, wie hoch der Turm ist!</div>
+        </div>
+        <div class="photo-overlay">
+          <span class="station-number-overlay">Station 2</span>
+          <span class="station-name-overlay">Cathédrale Notre-Dame-Immaculée</span>
+        </div>
+        <label class="photo-upload-label"><input type="file" accept="image/*" onchange="uploadPhoto(this,'area2','img2','status2')"></label>
+        <button class="change-photo-btn" onclick="triggerChange('area2')">↺ Foto ändern</button>
+      </div>
+      <div class="photo-status" id="status2"></div>
+
+      <div class="station-header">
+        <div class="station-num">2</div>
+        <div class="station-meta">
+          <div class="station-name">Cathédrale Notre-Dame-Immaculée <span class="free-badge">kostenlos</span></div>
+          <div class="station-subtitle">Religiöses Herz Monacos · Grabstätte von Grace Kelly &amp; Fürst Rainier III.</div>
+        </div>
+      </div>
+      <div class="station-body">
+        <p class="station-context">Die weißsteinerne Kathedrale auf dem Rocher ist für alle kostenlos zugänglich. Hier heiratete Grace Kelly 1956 und liegt heute neben Fürst Rainier III. begraben. Bitte Stille im Inneren beachten.</p>
+        <div class="task-box">
+          <span class="task-box-label">✦ Aufgabe – nur vor Ort lösbar</span>
+          <p class="task-question">Tretet in die Kathedrale ein. Beschreibt je ein konkretes Detail zu: <em>Farben</em> im Raum, dem <em>Boden</em>, der <em>Decke</em> und dem <em>Altar</em>. Schätzt dann die Höhe des Kirchturms und begründet eure Schätzung mit einem konkreten Vergleich.</p>
+          <textarea class="answer-field" placeholder="Farben: ...&#10;Boden: ...&#10;Decke: ...&#10;Altar: ...&#10;Turmhöhe Schätzung: ___ m | Begründung: ..." rows="6"></textarea>
+          <div class="task-checkbox-row">
+            <div class="task-checkbox" onclick="toggle(this,3)"></div>
+            <span class="task-checkbox-label">Aufgabe abgehakt (3 Punkte)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ STATION 3: Palais ═══ -->
+    <div class="station-card">
+      <div class="station-photo-area" id="area3">
+        <img class="uploaded-photo" id="img3" alt="Teamfoto Palast">
+        <div class="photo-placeholder">
+          <div class="photo-icon">📷</div>
+          <div class="photo-hint">Teamfoto hochladen</div>
+          <div class="photo-sub">Alle so steif und ernst vor dem Palasttor stehen wie die Wachen!</div>
+        </div>
+        <div class="photo-overlay">
+          <span class="station-number-overlay">Station 3</span>
+          <span class="station-name-overlay">Place du Palais – Fürstenpalast</span>
+        </div>
+        <label class="photo-upload-label"><input type="file" accept="image/*" onchange="uploadPhoto(this,'area3','img3','status3')"></label>
+        <button class="change-photo-btn" onclick="triggerChange('area3')">↺ Foto ändern</button>
+      </div>
+      <div class="photo-status" id="status3"></div>
+
+      <div class="station-header">
+        <div class="station-num">3</div>
+        <div class="station-meta">
+          <div class="station-name">Place du Palais – Fürstenpalast <span class="free-badge">Platz kostenlos</span></div>
+          <div class="station-subtitle">Residenz der Grimaldis seit 1297 · Bester Panoramablick über Monaco</div>
+        </div>
+      </div>
+      <div class="station-body">
+        <p class="station-context">Der Palastplatz ist frei zugänglich – ihr bleibt außen. Von hier habt ihr den spektakulärsten Panoramablick über ganz Monaco und könnt die Wachen aus nächster Nähe beobachten.</p>
+        <div class="task-box">
+          <span class="task-box-label">✦ Aufgabe – nur vor Ort lösbar</span>
+          <p class="task-question">Beobachtet die Palastwachen sehr genau: Beschreibt <em>Uniform-Farben</em>, <em>Kopfbedeckung</em> und <em>Symbole</em>. Stellt euch dann an die Aussichtsbrüstung und beschreibt, was ihr von <em>links nach rechts</em> seht – und wie viele Stockwerke die Häuser im Schnitt haben.</p>
+          <textarea class="answer-field" placeholder="Wachen – Farben: ... | Kopfbedeckung: ... | Symbole: ...&#10;Panorama links: ... | Mitte: ... | Rechts: ...&#10;Durchschnittliche Stockwerke: ___" rows="5"></textarea>
+          <div class="task-checkbox-row">
+            <div class="task-checkbox" onclick="toggle(this,3)"></div>
+            <span class="task-checkbox-label">Aufgabe abgehakt (3 Punkte)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ STATION 4: Museum ═══ -->
+    <div class="station-card">
+      <div class="station-photo-area" id="area4">
+        <img class="uploaded-photo" id="img4" alt="Teamfoto Museum">
+        <div class="photo-placeholder">
+          <div class="photo-icon">📷</div>
+          <div class="photo-hint">Teamfoto hochladen</div>
+          <div class="photo-sub">Alle vor dem größten Aquariumbecken – Fischschwimm-Move mit den Armen!</div>
+        </div>
+        <div class="photo-overlay">
+          <span class="station-number-overlay">Station 4</span>
+          <span class="station-name-overlay">Musée Océanographique</span>
+        </div>
+        <label class="photo-upload-label"><input type="file" accept="image/*" onchange="uploadPhoto(this,'area4','img4','status4')"></label>
+        <button class="change-photo-btn" onclick="triggerChange('area4')">↺ Foto ändern</button>
+      </div>
+      <div class="photo-status" id="status4"></div>
+
+      <div class="station-header">
+        <div class="station-num">4</div>
+        <div class="station-meta">
+          <div class="station-name">Musée Océanographique <span class="paid-badge">Eintritt inklusive</span></div>
+          <div class="station-subtitle">Gegründet 1910 von Fürst Albert I. · Weltberühmtes Mittelmeer-Aquarium</div>
+        </div>
+      </div>
+      <div class="station-body">
+        <p class="station-context">Das Ozeanographische Museum thront spektakulär auf dem Felsen direkt über dem Meer. Fürst Albert I. war selbst leidenschaftlicher Meeresforscher. Das Museum beherbergt eines der größten Aquarien Europas.</p>
+        <div class="task-box">
+          <span class="task-box-label">✦ Aufgabe – nur vor Ort lösbar</span>
+          <p class="task-question">Findet im Aquarium <em>drei Fischarten</em>, die ihr noch nie gesehen habt. Notiert für jede: den Namen (vom Schild!), eine auffällige <em>Körpereigenschaft</em> und wie sich das Tier <em>bewegt oder verhält</em>. Schätzt außerdem das größte Becken: Länge × Breite × Tiefe.</p>
+          <textarea class="answer-field" placeholder="Art 1 – Name: ... | Eigenschaft: ... | Verhalten: ...&#10;Art 2 – Name: ... | Eigenschaft: ... | Verhalten: ...&#10;Art 3 – Name: ... | Eigenschaft: ... | Verhalten: ...&#10;Größtes Becken: ca. ___ m × ___ m × ___ m" rows="6"></textarea>
+          <div class="task-checkbox-row">
+            <div class="task-checkbox" onclick="toggle(this,3)"></div>
+            <span class="task-checkbox-label">Aufgabe abgehakt (3 Punkte)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ STATION 5: Rocher Küstenweg ═══ -->
+    <div class="station-card">
+      <div class="station-photo-area" id="area5">
+        <img class="uploaded-photo" id="img5" alt="Teamfoto Küstenweg">
+        <div class="photo-placeholder">
+          <div class="photo-icon">📷</div>
+          <div class="photo-hint">Teamfoto hochladen</div>
+          <div class="photo-sub">Alle am Aussichtspunkt mit dem Mittelmeer im Hintergrund – Finger dramatisch aufs Wasser zeigen!</div>
+        </div>
+        <div class="photo-overlay">
+          <span class="station-number-overlay">Station 5</span>
+          <span class="station-name-overlay">Rocher – Küstenweg &amp; Aussichtspunkte</span>
+        </div>
+        <label class="photo-upload-label"><input type="file" accept="image/*" onchange="uploadPhoto(this,'area5','img5','status5')"></label>
+        <button class="change-photo-btn" onclick="triggerChange('area5')">↺ Foto ändern</button>
+      </div>
+      <div class="photo-status" id="status5"></div>
+
+      <div class="station-header">
+        <div class="station-num">5</div>
+        <div class="station-meta">
+          <div class="station-name">Rocher – Küstenweg &amp; Aussichtspunkte <span class="free-badge">kostenlos</span></div>
+          <div class="station-subtitle">Öffentlicher Weg rund um den Felsen · Blick auf Meer und Steilklippen</div>
+        </div>
+      </div>
+      <div class="station-body">
+        <p class="station-context">Der öffentliche Küstenweg rund um den Felsen bietet unverbaubare Ausblicke auf das Mittelmeer und auf ganz Monaco. Hier lässt sich der Kleinstaat räumlich wirklich begreifen.</p>
+        <div class="task-box">
+          <span class="task-box-label">✦ Aufgabe – nur vor Ort lösbar</span>
+          <p class="task-question">Schätzt vom Aussichtspunkt: Wie lange würde man brauchen, Monaco zu Fuß von <em>Ost nach West</em> zu durchqueren? Begründet mit der Breite, die ihr vor euch seht. Beschreibt dann, was euch an der <em>Bebauung</em> auffällt – und warum Monaco so hoch baut.</p>
+          <textarea class="answer-field" placeholder="Geschätzte Breite: ca. ___ km | Gehzeit: ca. ___ Min. | Begründung: ...&#10;Bebauung (Auffälliges): ...&#10;Warum so hoch gebaut (eigene Beobachtung): ..." rows="5"></textarea>
+          <div class="task-checkbox-row">
+            <div class="task-checkbox" onclick="toggle(this,3)"></div>
+            <span class="task-checkbox-label">Aufgabe abgehakt (3 Punkte)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ STATION 6: Casino ═══ -->
+    <div class="station-card">
+      <div class="station-photo-area" id="area6">
+        <img class="uploaded-photo" id="img6" alt="Teamfoto Casino">
+        <div class="photo-placeholder">
+          <div class="photo-icon">📷</div>
+          <div class="photo-hint">Teamfoto hochladen</div>
+          <div class="photo-sub">Vollste VIP-Posen vor dem Casino – gelangweilte Millionärs-Miene erwünscht!</div>
+        </div>
+        <div class="photo-overlay">
+          <span class="station-number-overlay">Station 6</span>
+          <span class="station-name-overlay">Place du Casino – Monte-Carlo</span>
+        </div>
+        <label class="photo-upload-label"><input type="file" accept="image/*" onchange="uploadPhoto(this,'area6','img6','status6')"></label>
+        <button class="change-photo-btn" onclick="triggerChange('area6')">↺ Foto ändern</button>
+      </div>
+      <div class="photo-status" id="status6"></div>
+
+      <div class="station-header">
+        <div class="station-num">6</div>
+        <div class="station-meta">
+          <div class="station-name">Place du Casino &amp; Jardin du Casino <span class="free-badge">kostenlos</span></div>
+          <div class="station-subtitle">Ikonischer Platz von Monte-Carlo · Casino-Fassade &amp; Luxuswelt</div>
+        </div>
+      </div>
+      <div class="station-body">
+        <p class="station-context">Platz und Garten vor dem Casino sind öffentlich zugänglich. Das Casino selbst bleibt außen – die Fassade, die Autos davor und die Menschen auf dem Platz zeigen mehr als genug über Monaco.</p>
+        <div class="task-box">
+          <span class="task-box-label">✦ Aufgabe – nur vor Ort lösbar</span>
+          <p class="task-question">Zählt <em>5 Minuten lang</em> alle Luxusautos auf dem Platz (Marke + Anzahl + häufigste Farbe). Beschreibt dann die <em>Casino-Fassade</em>: Welche architektonischen Elemente seht ihr? Wie unterscheidet sich der Stil von Gebäuden in eurer Heimatstadt?</p>
+          <textarea class="answer-field" placeholder="Autos – Marken und Anzahl: ... | Häufigste Farbe: ...&#10;Fassade – Elemente: ... | Material: ...&#10;Unterschied zu zuhause: ..." rows="5"></textarea>
+          <div class="task-checkbox-row">
+            <div class="task-checkbox" onclick="toggle(this,3)"></div>
+            <span class="task-checkbox-label">Aufgabe abgehakt (3 Punkte)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ STATION 7: F1-Strecke ═══ -->
+    <div class="station-card">
+      <div class="station-photo-area" id="area7">
+        <img class="uploaded-photo" id="img7" alt="Teamfoto F1-Strecke">
+        <div class="photo-placeholder">
+          <div class="photo-icon">📷</div>
+          <div class="photo-hint">Teamfoto hochladen</div>
+          <div class="photo-sub">Alle auf der echten F1-Strecke in Rennfahrer-Pose – Hände ans imaginäre Lenkrad!</div>
+        </div>
+        <div class="photo-overlay">
+          <span class="station-number-overlay">Station 7</span>
+          <span class="station-name-overlay">Grand Prix Strecke – Hafen-Schikane</span>
+        </div>
+        <label class="photo-upload-label"><input type="file" accept="image/*" onchange="uploadPhoto(this,'area7','img7','status7')"></label>
+        <button class="change-photo-btn" onclick="triggerChange('area7')">↺ Foto ändern</button>
+      </div>
+      <div class="photo-status" id="status7"></div>
+
+      <div class="station-header">
+        <div class="station-num">7</div>
+        <div class="station-meta">
+          <div class="station-name">Grand Prix Strecke – Hafen-Schikane <span class="free-badge">kostenlos</span></div>
+          <div class="station-subtitle">Schwierigstes Formel-1-Rennen der Welt · Mitten durch Stadtstraßen</div>
+        </div>
+      </div>
+      <div class="station-body">
+        <p class="station-context">Die Formel-1-Strecke führt durch ganz normale Stadtstraßen. Mit eigenen Schritten könnt ihr messen, wie wenig Platz ein F1-Auto hier wirklich hat.</p>
+        <div class="task-box">
+          <span class="task-box-label">✦ Aufgabe – nur vor Ort lösbar</span>
+          <p class="task-question">Messt die Fahrbahnbreite an der Hafen-Schikane mit <em>Schritten</em> (1 Schritt ≈ 75 cm). Rechnet: Wie viel Platz bleibt neben einem F1-Auto (2 m breit) auf jeder Seite? Nennt dann <em>drei Gründe</em>, warum Monaco das schwierigste Rennen ist – nur auf Basis dessen, was ihr hier seht.</p>
+          <textarea class="answer-field" placeholder="Schritte: ___ = ca. ___ m | Platz neben F1-Auto: ca. ___ cm&#10;Grund 1 (vor Ort gesehen): ...&#10;Grund 2: ...&#10;Grund 3: ..." rows="5"></textarea>
+          <div class="task-checkbox-row">
+            <div class="task-checkbox" onclick="toggle(this,3)"></div>
+            <span class="task-checkbox-label">Aufgabe abgehakt (3 Punkte)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ STATION 8: Abschluss Port Hercule ═══ -->
+    <div class="station-card">
+      <div class="station-photo-area" id="area8">
+        <img class="uploaded-photo" id="img8" alt="Abschlussfoto">
+        <div class="photo-placeholder">
+          <div class="photo-icon">📷</div>
+          <div class="photo-hint">Abschlussfoto hochladen</div>
+          <div class="photo-sub">Offizielles Gruppenfoto am Hafen – alle halten ihre ausgefüllte Rallye sichtbar in die Kamera!</div>
+        </div>
+        <div class="photo-overlay">
+          <span class="station-number-overlay">Station 8 – Abschluss</span>
+          <span class="station-name-overlay">Port Hercule – Treffpunkt 17:00 Uhr</span>
+        </div>
+        <label class="photo-upload-label"><input type="file" accept="image/*" onchange="uploadPhoto(this,'area8','img8','status8')"></label>
+        <button class="change-photo-btn" onclick="triggerChange('area8')">↺ Foto ändern</button>
+      </div>
+      <div class="photo-status" id="status8"></div>
+
+      <div class="station-header">
+        <div class="station-num">8</div>
+        <div class="station-meta">
+          <div class="station-name">Port Hercule – Abschluss &amp; Reflexion <span class="free-badge">kostenlos</span></div>
+          <div class="station-subtitle">Treffpunkt 17:00 Uhr · Großer Brunnen am Hafeneingang</div>
+        </div>
+      </div>
+      <div class="station-body">
+        <p class="station-context">Ihr habt heute Monaco in seiner ganzen Besonderheit erlebt – jetzt bringt ihr alles zusammen. Nur eigene Eindrücke, kein Nachschlagen.</p>
+        <div class="task-box">
+          <span class="task-box-label">✦ Abschlussaufgabe</span>
+          <p class="task-question">Jede Person schreibt <em>einen Satz</em>: ihren stärksten persönlichen Eindruck des Tages. Einigt euch danach gemeinsam auf <em>drei Dinge</em>, die ihr heute mit eigenen Augen gesehen habt und die Monaco von einem typischen europäischen Land unterscheiden.</p>
+          <textarea class="answer-field" placeholder="Person 1: ...&#10;Person 2: ...&#10;Person 3: ...&#10;Person 4: ...&#10;&#10;Monaco ist besonders weil (3 eigene Beobachtungen):&#10;1. ...&#10;2. ...&#10;3. ..." rows="9"></textarea>
+          <div class="task-checkbox-row">
+            <div class="task-checkbox" onclick="toggle(this,3)"></div>
+            <span class="task-checkbox-label">Aufgabe abgehakt (3 Punkte)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FINAL -->
+    <div class="final-box">
+      <h3>♛ Rallye abgeschlossen!</h3>
+      <p>Abgabe bis <strong>17:00 Uhr</strong> am Port Hercule.<br>
+      Max. Punktzahl: <strong>24 Punkte</strong> (Aufgaben) + <strong>8 Punkte</strong> (Fotos) = <strong>32 Punkte</strong><br>
+      Alle Antworten aus eigener Beobachtung vor Ort – gut gemacht!</p>
+    </div>
+
+    <div style="text-align:center">
+      <button class="print-btn" onclick="window.print()">⊞ Drucken / Als PDF speichern</button>
+    </div>
+  </div>
+
+  <!-- SCORE -->
+  <div class="score-tracker">
+    <div class="s-label">Punkte</div>
+    <div class="s-value" id="scoreDisplay">0</div>
+    <div class="s-label">von 32</div>
+  </div>
+</div>
+
+<script>
+  function startRallye() {
+    document.getElementById('cover').style.display = 'none';
+    document.getElementById('content').classList.add('visible');
+  }
+
+  let score = 0;
+
+  function toggle(el, pts) {
+    if (el.classList.contains('checked')) {
+      el.classList.remove('checked');
+      el.textContent = '';
+      score = Math.max(0, score - pts);
+    } else {
+      el.classList.add('checked');
+      el.textContent = '✓';
+      score += pts;
+    }
+    document.getElementById('scoreDisplay').textContent = score;
+  }
+
+  function uploadPhoto(input, areaId, imgId, statusId) {
+    const file = input.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      const area = document.getElementById(areaId);
+      const img  = document.getElementById(imgId);
+      const stat = document.getElementById(statusId);
+      img.src = e.target.result;
+      area.classList.add('has-photo');
+      stat.textContent = '✓ Foto hochgeladen';
+
+      // Add 1 point for photo if not already counted
+      if (!area.dataset.photoScored) {
+        area.dataset.photoScored = '1';
+        score += 1;
+        document.getElementById('scoreDisplay').textContent = score;
+      }
+    };
+    reader.readAsDataURL(file);
+    input.value = '';
+  }
+
+  function triggerChange(areaId) {
+    const area = document.getElementById(areaId);
+    const input = area.querySelector('input[type=file]');
+    if (input) input.click();
+  }
+</script>
+</body>
+</html>
